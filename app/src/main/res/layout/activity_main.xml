@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     app:layout_scrollFlags="scroll"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/jsignup"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="125dp"
@@ -17,8 +18,8 @@
         android:background="@color/colorPrimaryDark"
         android:onClick="signupCheck"
         android:shadowColor="#E91E63"
-        android:text="signup"
-        android:textColor="#FCFDFF"
+        android:text="sign up"
+        android:textColor="@color/simpleButtonTextColor"
         android:textColorHint="#E91E63"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/jlogin"
@@ -91,11 +92,9 @@
 
     <Button
         android:id="@+id/jlogin"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginRight="125dp"
         android:background="@color/colorPrimaryDark"
         android:onClick="loginCheck"
         android:shadowColor="#E91E63"

@@ -19,7 +19,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="@string/app_name"
-            app:titleTextColor="@android:color/background_light" />
+            app:titleTextColor="@color/simpleButtonTextColor" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/sections"
