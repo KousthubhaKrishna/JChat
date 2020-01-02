@@ -9,11 +9,9 @@
 
     <Button
         android:id="@+id/jsignup"
-        android:layout_width="140dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginRight="125dp"
+        android:layout_marginTop="52dp"
         android:background="@color/colorPrimaryDark"
         android:onClick="signupCheck"
         android:shadowColor="#E91E63"
@@ -21,60 +19,57 @@
         android:textColor="#FCFDFF"
         android:textColorHint="#E91E63"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/jlogin"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/jlogin"
-        app:layout_constraintTop_toBottomOf="@+id/jlogin" />
+        app:layout_constraintEnd_toEndOf="@+id/jpassword"
+        app:layout_constraintTop_toBottomOf="@+id/jpassword" />
 
     <ImageView
         android:id="@+id/jicon"
         android:layout_width="152dp"
         android:layout_height="148dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="44dp"
         android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/jchat"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="@+id/jchat"
+        app:layout_constraintTop_toBottomOf="@+id/jchat"
         app:srcCompat="@mipmap/feather" />
 
     <TextView
         android:id="@+id/jchat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="76dp"
         android:text="@string/app_name"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.167"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jicon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/jemail"
-        android:layout_width="250dp"
+        android:layout_width="285dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:drawableStart="@drawable/ic_stat_name_email"
+        android:layout_marginTop="88dp"
         android:drawableLeft="@drawable/ic_stat_name_email"
+        android:drawableStart="@drawable/ic_stat_name_email"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.742"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jchat" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/jpassword"
-        android:layout_width="250dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
-        android:drawableStart="@drawable/ic_stat_name_lock"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/ic_stat_name_lock"
+        android:drawableStart="@drawable/ic_stat_name_lock"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -85,9 +80,9 @@
 
     <Button
         android:id="@+id/jlogin"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
         android:background="@color/colorPrimaryDark"
         android:onClick="loginCheck"
         android:shadowColor="#E91E63"
@@ -95,41 +90,37 @@
         android:textColor="#FCFDFF"
         android:textColorHint="#E91E63"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/jsignup"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/jpassword"
         app:layout_constraintTop_toBottomOf="@+id/jpassword" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="197dp"
-        android:layout_marginLeft="197dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="197dp"
-        android:layout_marginRight="197dp"
-        android:layout_marginBottom="6dp"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
         android:text="or"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/jsignup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jlogin" />
+        app:layout_constraintEnd_toStartOf="@+id/jsignup"
+        app:layout_constraintStart_toEndOf="@+id/jlogin"
+        app:layout_constraintTop_toBottomOf="@+id/jpassword" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="198dp"
-        android:layout_marginLeft="198dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginTop="4dp"
         android:text="Forgot Password ?"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jpassword" />
 
