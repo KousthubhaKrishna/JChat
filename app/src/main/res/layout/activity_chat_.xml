@@ -7,13 +7,24 @@
     tools:context=".Chat_Activity">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/titles"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="@string/app_name" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/sections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar3">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -35,7 +46,11 @@
             android:id="@+id/messages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/titles" />
+            android:layout_below="@id/sections"
+            android:layout_marginTop="1dp">
+
+        </ListView>
 
     </RelativeLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
