@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void signupCheck(View view)
+    {
+        Intent in = new Intent(MainActivity.this,SignupActivity.class);
+        startActivity(in);
+    }
     public void loginCheck(View view)
     {
         EditText email = (EditText)findViewById(R.id.jemail);

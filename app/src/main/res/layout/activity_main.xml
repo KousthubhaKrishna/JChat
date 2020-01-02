@@ -16,7 +16,7 @@
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:background="@color/colorAccent"
-        android:onClick="loginCheck"
+        android:onClick="signupCheck"
         android:shadowColor="#E91E63"
         android:text="signup"
         android:textColor="#FCFDFF"
