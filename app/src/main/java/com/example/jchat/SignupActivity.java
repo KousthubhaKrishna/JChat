@@ -16,15 +16,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     ProgressDialog loadingBar;
+    DatabaseReference rootRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        mAuth = FirebaseAuth.getInstance();
+        rootRef = FirebaseDatabase.getInstance().getReference();
     }
 
     public void createUser(View view)
@@ -47,29 +55,30 @@ public class SignupActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(emailString, passwordString)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        public void onComplete(Task<AuthResult> task) {
                             loadingBar.dismiss();
                             if (task.isSuccessful()) {
-                                Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                String userId = user.getUid();
+                                rootRef.child("Users").child(userId).setValue(new User(user.getUid(),"","",user.getEmail(),""));
+                                Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_LONG).show();
+                                sendUserToMainActivity(null);
                             } else {
-                                Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
-
-                            // ...
                         }
                     });
         }
-
     }
 
-    public void back(View view)
+    public void sendUserToMainActivity(View view)
     {
         Intent in = new Intent(SignupActivity.this,MainActivity.class);
         startActivity(in);
     }
 }
+
+

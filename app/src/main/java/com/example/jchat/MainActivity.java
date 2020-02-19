@@ -1,15 +1,18 @@
 package com.example.jchat;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,11 +30,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    public void signupCheck(View view)
+    public void sendUserToSignupActvity(View view)
     {
         Intent in = new Intent(MainActivity.this,SignupActivity.class);
+        startActivity(in);
+    }
+
+    public void sendUserToChatMainActivity()
+    {
+        Intent in = new Intent(MainActivity.this, ChatMainActivity.class);
         startActivity(in);
     }
 
@@ -55,17 +65,15 @@ public class MainActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(emailString, passwordString)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        public void onComplete(Task<AuthResult> task) {
                             loadingBar.dismiss();
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(MainActivity.this, ChatActivity.class);
-                                startActivity(in);
+                                sendUserToChatMainActivity();
                             } else {
                                 Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
                             }
@@ -73,4 +81,5 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
     }
+
 }

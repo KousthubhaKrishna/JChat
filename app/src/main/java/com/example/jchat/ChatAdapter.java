@@ -1,15 +1,13 @@
 package com.example.jchat;
 
 import android.app.Activity;
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 public class ChatAdapter extends ArrayAdapter {
 
@@ -20,7 +18,7 @@ public class ChatAdapter extends ArrayAdapter {
 
     public ChatAdapter(Activity context,String contactNames[],String lastMessages[],String contactImageURLs[])
     {
-        super(context,R.layout.chat_layout,contactNames);
+        super(context,R.layout.activity_chat_main,contactNames);
         this.context = context;
         this.contactNames = contactNames;
         this.lastMessages = lastMessages;
@@ -32,12 +30,12 @@ public class ChatAdapter extends ArrayAdapter {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.chat_layout,null,true);
 
-        TextView contactName = (TextView)rowView.findViewById(R.id.textView1);
-        TextView lastMessage = (TextView)rowView.findViewById(R.id.textView2);
-        ImageView profilePic = (ImageView)rowView.findViewById(R.id.imageView);
+        TextView contactName = (TextView)rowView.findViewById(R.id.message_name);
+        TextView lastMessage = (TextView)rowView.findViewById(R.id.message_context);
+        ImageView profilePic = (ImageView)rowView.findViewById(R.id.message_pic);
         contactName.setText(contactNames[position]);
         lastMessage.setText(lastMessages[position]);
-        profilePic.setImageResource(R.mipmap.ic_launcher_round);
+        profilePic.setImageResource(R.drawable.user_icon);
         return rowView;
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ChatMainActivity">
+
+    <item
+        android:id="@+id/options_find_friends"
+        android:title="Find Friends">
+    </item>
+    <item
+        android:id="@+id/options_settings"
+        android:title="Settings">
+    </item>
+    <item
+        android:id="@+id/options_logout"
+        android:title="Logout">
+    </item>
+
+</menu>

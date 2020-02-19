@@ -7,20 +7,6 @@
     android:background="@color/backgroundColor"
     tools:context=".SignupActivity">
 
-    <TextView
-        android:id="@+id/jchat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginLeft="112dp"
-        android:layout_marginTop="76dp"
-        android:text="@string/app_name"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/jsignup"
         android:layout_width="wrap_content"
@@ -41,16 +27,16 @@
 
     <ImageView
         android:id="@+id/jicon"
-        android:layout_width="152dp"
-        android:layout_height="148dp"
+        android:layout_width="182dp"
+        android:layout_height="178dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jchat"
-        app:layout_constraintVertical_bias="0.287"
-        app:srcCompat="@mipmap/feather" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.446"
+        app:srcCompat="@drawable/logo_pic" />
 
     <EditText
         android:id="@+id/jpassword"
@@ -88,7 +74,7 @@
         android:layout_width="192dp"
         android:layout_height="25dp"
         android:layout_marginTop="16dp"
-        android:onClick="back"
+        android:onClick="sendUserToMainActivity"
         android:text="Already have an Account ?"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"

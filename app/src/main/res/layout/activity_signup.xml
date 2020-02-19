@@ -7,40 +7,26 @@
     android:background="@color/backgroundColor"
     tools:context=".SignupActivity">
 
-    <TextView
-        android:id="@+id/jchat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="@string/app_name"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/jicon"
-        app:layout_constraintHorizontal_bias="0.569"
-        app:layout_constraintStart_toStartOf="@+id/jicon"
-        app:layout_constraintTop_toBottomOf="@+id/jicon" />
-
 
     <ImageView
         android:id="@+id/jicon"
-        android:layout_width="152dp"
-        android:layout_height="148dp"
-        android:layout_marginTop="70dp"
+        android:layout_width="165dp"
+        android:layout_height="165dp"
+        android:layout_marginTop="130dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/feather" />
+        app:srcCompat="@drawable/logo_pic" />
 
     <EditText
         android:id="@+id/jpassword"
-        android:layout_width="0dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
         android:drawableStart="@drawable/ic_stat_name_lock"
@@ -55,14 +41,13 @@
 
     <EditText
         android:id="@+id/jemail"
-        android:layout_width="0dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
-        android:layout_marginBottom="350dp"
         android:drawableStart="@drawable/ic_stat_name_email"
         android:drawableLeft="@drawable/ic_stat_name_email"
         android:ems="10"
@@ -72,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jchat" /><![CDATA[
+        app:layout_constraintTop_toBottomOf="@+id/jicon" /><![CDATA[
         app:layout_constraintTop_toBottomOf="@+id/jchat"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -82,7 +67,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="back"
+        android:onClick="sendUserToMainActivity"
         android:text="Already have an Account ?"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
@@ -96,14 +81,16 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="30dp"
         android:background="@color/colorPrimaryDark"
+        android:onClick="createUser"
         android:paddingLeft="@dimen/button_padding"
         android:paddingRight="@dimen/button_padding"
         android:text="SIGN UP"
         android:textColor="@color/simpleButtonTextColor"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jpassword" />
