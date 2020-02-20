@@ -7,4 +7,5 @@
     <color name="simpleButtonTextColor">#FFFFFF</color>
     <color name="labelColor">#191616</color>
     <color name="backgroundColor">#FAFAFA</color>
+    <color name="logoBackground">#0A0931</color>
 </resources>

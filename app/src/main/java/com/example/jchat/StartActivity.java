@@ -20,6 +20,7 @@ public class StartActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     DatabaseReference rootRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,6 @@ public class StartActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         rootRef = FirebaseDatabase.getInstance().getReference();
-
     }
 
     @Override
