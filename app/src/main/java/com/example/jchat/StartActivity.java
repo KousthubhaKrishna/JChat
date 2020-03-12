@@ -33,14 +33,10 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(currentUser == null)
-        {
-            sendUserToMainActivity();
-        }
-        else
-        {
+        if(currentUser != null)
             verifyUserExistance();
-        }
+        else
+            sendUserToMainActivity();
     }
 
     protected void sendUserToMainActivity()

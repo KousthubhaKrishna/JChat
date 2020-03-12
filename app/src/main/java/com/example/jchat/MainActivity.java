@@ -1,5 +1,6 @@
 package com.example.jchat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -20,17 +21,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     ProgressDialog loadingBar;
+    FirebaseUser currentUser;
+    DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        rootRef = FirebaseDatabase.getInstance().getReference();
     }
 
     public void sendUserToSignupActvity(View view)
@@ -71,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(Task<AuthResult> task) {
                             loadingBar.dismiss();
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                currentUser = mAuth.getCurrentUser();
                                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                sendUserToChatMainActivity();
+                                verifyUserExistance();
                             } else {
                                 Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
                             }
@@ -82,4 +92,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected void sendUserToMainActivity()
+    {
+        Intent in = new Intent(MainActivity.this,MainActivity.class);
+        startActivity(in);
+    }
+
+    protected void verifyUserExistance()
+    {
+        String currentUserUid = currentUser.getUid();
+        rootRef.child("Users").child(currentUserUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("Here ");
+                if(dataSnapshot.child("name").exists())
+                {
+                    if(dataSnapshot.child("name").getValue().toString().isEmpty()) {
+                        sendUserToProfileActivity();
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                        sendUserToChatMainActivity();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+    }
+
+    protected void sendUserToProfileActivity()
+    {
+        Intent in = new Intent(MainActivity.this,ProfileActivity.class);
+        startActivity(in);
+    }
 }

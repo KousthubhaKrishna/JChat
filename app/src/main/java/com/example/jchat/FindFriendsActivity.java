@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,22 +36,55 @@ public class FindFriendsActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
     }
 
-    protected void searchUsers(View view)
+    public void searchUsers(View view)
     {
         searchEmail = searchEmailView.getText().toString();
-        rootRef.child("Users").child(currentUserId).child("friends").addValueEventListener(new ValueEventListener() {
+        rootRef.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds:dataSnapshot.getChildren() )
-                {
-                    System.out.println(ds.getKey());
+                String friendUid = searchUsersList(dataSnapshot,searchEmail);
+                if(friendUid != null) {
+                    if(!dataSnapshot.child(currentUserId).child("friends").child(friendUid).exists())
+                    {
+                        DatabaseReference curRef = rootRef.child("Users").child(currentUserId).child("friends");
+                        String chatId = curRef.child(friendUid).push().getKey();
+                        curRef.child(friendUid).setValue(chatId);
+                        rootRef.child("Users").child(friendUid).child("friends").child(currentUserId).setValue(chatId);
+                        rootRef.child("Chats").child(chatId).setValue("");
+                        Toast.makeText(FindFriendsActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(FindFriendsActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else
+                    Toast.makeText(FindFriendsActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
+            public String searchUsersList(DataSnapshot dataSnapshot,String searchEmail)
+            {
+                boolean found = false;
+                String friendKey="",friendUid = null;
+                for(DataSnapshot ds:dataSnapshot.getChildren() )
+                {
+                    friendKey = dataSnapshot.child(ds.getKey()).child("email").getValue().toString();
+                    friendUid = dataSnapshot.child(ds.getKey()).child("uid").getValue().toString();
+                    System.out.println(friendKey);
+                    System.out.println("KK "+dataSnapshot.child(currentUserId).child("friends").child(friendUid).exists());
+                    if(friendKey.equals(searchEmail)) {
+                        System.out.println("Returning FriendUid");
+                        return friendUid;
+                    }
+                }
+                System.out.println("Returning NUll");
+                return null;
+            }
+
         });
     }
 }
