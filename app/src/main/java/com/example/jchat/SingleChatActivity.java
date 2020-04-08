@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,8 +105,13 @@ public class SingleChatActivity extends AppCompatActivity {
 
     public void sendMessage(View view)
     {
-        date = new Date();
         EditText ed = (EditText)findViewById(R.id.single_chat_message);
+        String mes = ed.getText().toString();
+        if(mes.length()<0) {
+            Toast.makeText(this, "Type Message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        date = new Date();
         Message message = new Message(ed.getText().toString(),date,sdf.format(date),stf.format(date),currentUserId,friendUid);
         String messageID = rootRef.push().getKey();
         rootRef.child(messageID).setValue(message);
