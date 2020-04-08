@@ -48,8 +48,8 @@ public class FindFriendsActivity extends AppCompatActivity {
                     {
                         DatabaseReference curRef = rootRef.child("Users").child(currentUserId).child("friends");
                         String chatId = curRef.child(friendUid).push().getKey();
-                        curRef.child(friendUid).setValue(chatId);
-                        rootRef.child("Users").child(friendUid).child("friends").child(currentUserId).setValue(chatId);
+                        curRef.child(friendUid).child(chatId).setValue("Personal");
+                        rootRef.child("Users").child(friendUid).child("friends").child(currentUserId).child(chatId).setValue("Personal");
                         rootRef.child("Chats").child(chatId).setValue("");
                         Toast.makeText(FindFriendsActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
                     }

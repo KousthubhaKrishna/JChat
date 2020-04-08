@@ -56,7 +56,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = userMessagesList.get(position);
-        System.out.println(message.mes);
         if(message.senderUId.equals(currentUserId) )
         {
             holder.senderMessage.setText(message.mes);

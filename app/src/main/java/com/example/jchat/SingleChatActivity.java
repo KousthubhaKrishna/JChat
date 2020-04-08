@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,20 +31,21 @@ import java.util.List;
 
 public class SingleChatActivity extends AppCompatActivity {
 
-    Date date;
-    SimpleDateFormat sdf,stf;
-    String chatId,friendUid;
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    String currentUserId;
-    DatabaseReference rootRef;
+    private Date date;
+    private SimpleDateFormat sdf,stf;
+    private String chatId,friendUid;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private String currentUserId;
+    private DatabaseReference rootRef;
     private final List<Message> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat);
 
@@ -52,6 +54,7 @@ public class SingleChatActivity extends AppCompatActivity {
         tb.setTitle(in.getStringExtra("name"));
         chatId = in.getStringExtra("chatId");
         friendUid = in.getStringExtra("friendUid");
+        System.out.println("I am printing "+friendUid);
 
         sdf = new SimpleDateFormat("dd-MMM-yyyy");
         stf = new SimpleDateFormat("HH:mm");
@@ -66,11 +69,7 @@ public class SingleChatActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesView.setLayoutManager(linearLayoutManager);
         userMessagesView.setAdapter(messageAdapter);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        userMessagesView = (RecyclerView)findViewById(R.id.display_chat);
 
         rootRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -78,6 +77,7 @@ public class SingleChatActivity extends AppCompatActivity {
                 Message message = dataSnapshot.getValue(Message.class);
                 messagesList.add(message);
                 messageAdapter.notifyDataSetChanged();
+                userMessagesView.scrollToPosition(messagesList.size()-1);
             }
 
             @Override

@@ -31,6 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabBackground="@color/colorPrimary"
         app:tabRippleColor="@color/backgroundColor"
+        app:tabIndicatorColor="@color/tabBottom"
         app:tabTextColor="@color/common_google_signin_btn_text_dark_default">
 
         <com.google.android.material.tabs.TabItem
@@ -41,12 +42,13 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:foreground="@color/backgroundColor"
             android:text="Business" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Others" />
+            android:text="Others"/>
     </com.google.android.material.tabs.TabLayout>
 
     <ListView

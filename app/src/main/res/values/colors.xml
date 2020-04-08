@@ -8,4 +8,5 @@
     <color name="labelColor">#191616</color>
     <color name="backgroundColor">#FAFAFA</color>
     <color name="logoBackground">#0A0931</color>
+    <color name="tabBottom">#1E91E8</color>
 </resources>
