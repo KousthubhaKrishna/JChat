@@ -39,7 +39,7 @@
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
         android:text="Hi! How are you ?"
-        android:textColor="#85E8FF"
+        android:textColor="@color/backgroundColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
