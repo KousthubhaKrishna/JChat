@@ -81,10 +81,10 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="170dp"
-        android:layout_height="56dp"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/sender_message"
         android:onClick="createUser"
         android:paddingLeft="@dimen/button_padding"
         android:paddingRight="@dimen/button_padding"

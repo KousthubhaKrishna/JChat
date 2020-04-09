@@ -10,12 +10,12 @@
 
     <Button
         android:id="@+id/jsignup"
-        android:layout_width="170dp"
-        android:layout_height="61dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/sender_message"
         android:onClick="sendUserToSignupActvity"
         android:shadowColor="#E91E63"
         android:text="sign up"
@@ -79,10 +79,10 @@
 
     <Button
         android:id="@+id/jlogin"
-        android:layout_width="170dp"
-        android:layout_height="52dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/sender_message"
         android:onClick="loginCheck"
         android:shadowColor="#E91E63"
         android:text="@string/login"
