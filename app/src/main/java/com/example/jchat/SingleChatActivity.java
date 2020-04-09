@@ -107,7 +107,7 @@ public class SingleChatActivity extends AppCompatActivity {
     {
         EditText ed = (EditText)findViewById(R.id.single_chat_message);
         String mes = ed.getText().toString();
-        if(mes.length()<0) {
+        if(mes.length()<1) {
             Toast.makeText(this, "Type Message", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -46,7 +46,7 @@
     <ImageView
         android:id="@+id/send_message_button"
         android:layout_width="60dp"
-        android:layout_height="73dp"
+        android:layout_height="67dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:onClick="sendMessage"
@@ -56,8 +56,8 @@
 
     <EditText
         android:id="@+id/single_chat_message"
-        android:layout_width="311dp"
-        android:layout_height="57dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
