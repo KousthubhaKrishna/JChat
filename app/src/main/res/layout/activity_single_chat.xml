@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Friend Name"
-        app:titleTextColor="@color/simpleButtonTextColor" />
+        app:titleTextColor="@color/tabBottom" />
 
 <!--    <ScrollView-->
 <!--        android:id="@+id/scroll_id"-->
