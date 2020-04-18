@@ -2,8 +2,6 @@ package com.example.jchat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,18 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ChatMainActivity extends AppCompatActivity {
 
@@ -70,7 +60,7 @@ public class ChatMainActivity extends AppCompatActivity {
         setSupportActionBar(mTopToolbar);
         mTopToolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -92,6 +82,7 @@ public class ChatMainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void populateDetails(int index) {
@@ -140,18 +131,12 @@ public class ChatMainActivity extends AppCompatActivity {
         });
     }
 
-    protected String getCategory(int index)
-    {
-        if(index == 2)
-        {
+    protected String getCategory(int index) {
+        if (index == 2) {
             return "Others";
-        }
-        else if(index == 1)
-        {
+        } else if (index == 1) {
             return "Business";
-        }
-        else
-        {
+        } else {
             return "Personal";
         }
     }
@@ -159,7 +144,7 @@ public class ChatMainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.options_menu,menu);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
 
@@ -168,23 +153,20 @@ public class ChatMainActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Choose Category");
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.categories_menu,menu);
+        menuInflater.inflate(R.menu.categories_menu, menu);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         DatabaseReference curRef = rootRef.child("Users").child(currentUserId).child("friends").child(friendUid.get(info.position)).child(chatId.get(info.position));
-        if(item.getItemId()==R.id.categories_personal)
-        {
+        if (item.getItemId() == R.id.categories_personal) {
             curRef.setValue("Personal");
         }
-        if(item.getItemId()==R.id.categories_business)
-        {
+        if (item.getItemId() == R.id.categories_business) {
             curRef.setValue("Business");
         }
-        if(item.getItemId()==R.id.categories_others)
-        {
+        if (item.getItemId() == R.id.categories_others) {
             curRef.setValue("Others");
         }
         Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
@@ -195,51 +177,31 @@ public class ChatMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
 
-        if(item.getItemId() == R.id.options_logout)
-        {
+        if (item.getItemId() == R.id.options_logout) {
             mAuth.signOut();
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
             sendUserToLoginActvity();
-        }
-        else if(item.getItemId() == R.id.options_settings)
-        {
+        } else if (item.getItemId() == R.id.options_settings) {
             sendUserToProfileActivity();
-        }
-        else if(item.getItemId() == R.id.options_find_friends)
-        {
+        } else if (item.getItemId() == R.id.options_find_friends) {
             sendUserToFindFriendsActvity();
         }
         return true;
     }
 
-    private void sendUserToFindFriendsActvity()
-    {
-        Intent in = new Intent(ChatMainActivity.this,FindFriendsActivity.class);
+    private void sendUserToFindFriendsActvity() {
+        Intent in = new Intent(ChatMainActivity.this, FindFriendsActivity.class);
         startActivity(in);
     }
 
-    public void sendUserToLoginActvity()
-    {
-        Intent in = new Intent(ChatMainActivity.this,MainActivity.class);
+    public void sendUserToLoginActvity() {
+        Intent in = new Intent(ChatMainActivity.this, MainActivity.class);
         startActivity(in);
     }
 
-    protected void sendUserToProfileActivity()
-    {
-        Intent in = new Intent(ChatMainActivity.this,ProfileActivity.class);
+    protected void sendUserToProfileActivity() {
+        Intent in = new Intent(ChatMainActivity.this, ProfileActivity.class);
         startActivity(in);
     }
 
 }
-/*ListView lv = (ListView)findViewById(R.id.messages);
-        ChatAdapter adt = new ChatAdapter(this,contactNames,messages,null);
-        lv.setAdapter(adt);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = contactNames[position];
-                Intent in = new Intent(ChatMainActivity.this,SingleChatActivity.class);
-                in.putExtra("name",name);
-                startActivity(in);
-            }
-        });*/

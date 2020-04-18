@@ -44,7 +44,6 @@ public class SignupActivity extends AppCompatActivity {
 
         if(emailString.isEmpty() || passwordString.isEmpty() || emailString==null || passwordString == null)
         {
-
             Toast.makeText(SignupActivity.this, "Please provide both E-mail and Password", Toast.LENGTH_LONG).show();
         }
         else
@@ -63,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String userId = user.getUid();
-                                rootRef.child("Users").child(userId).setValue(new User(user.getUid(),"","",user.getEmail(),""));
+                                rootRef.child("Users").child(userId).setValue(new User(user.getUid(),"","",user.getEmail(),"","11"));
                                 Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_LONG).show();
                                 sendUserToMainActivity(null);
                             } else {

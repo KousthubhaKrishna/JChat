@@ -58,13 +58,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Message message = userMessagesList.get(position);
         if(message.senderUId.equals(currentUserId) )
         {
-            holder.senderMessage.setText(message.mes);
+            holder.senderMessage.setText(message.send_mes);
             holder.senderMessage.setVisibility(View.VISIBLE);
             holder.receiverMessage.setVisibility(View.INVISIBLE);
         }
         else
         {
-            holder.receiverMessage.setText(message.mes);
+            holder.receiverMessage.setText(message.rec_mes);
             holder.receiverMessage.setVisibility(View.VISIBLE);
             holder.senderMessage.setVisibility(View.INVISIBLE);
         }

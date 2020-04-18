@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                         sendUserToChatMainActivity();
                     }
                 }
