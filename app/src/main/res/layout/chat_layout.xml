@@ -8,10 +8,11 @@
 
     <ImageView
         android:id="@+id/message_pic"
-        android:layout_width="87dp"
+        android:layout_width="70dp"
         android:layout_height="61dp"
         android:layout_margin="10dp"
         android:layout_weight="1"
+        android:paddingLeft="20dp"
         app:srcCompat="@drawable/user_icon" />
 
     <LinearLayout
@@ -27,8 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
             android:text="TextView"
-            android:textColor="#262626"
+            android:textAllCaps="false"
+            android:textColor="@color/logoBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 

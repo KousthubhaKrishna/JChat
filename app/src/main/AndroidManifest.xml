@@ -27,6 +27,7 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity" />
+
     </application>
 
 </manifest>

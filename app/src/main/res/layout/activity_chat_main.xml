@@ -26,12 +26,13 @@
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:alpha="0.85"
+        android:background="@color/logoBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:tabBackground="@color/logoBackground"
         app:tabIndicatorColor="@color/tabBottom"
-        app:tabRippleColor="@color/backgroundColor"
+        app:tabSelectedTextColor="@color/tabBottom"
         app:tabTextColor="@android:color/background_light">
 
         <com.google.android.material.tabs.TabItem
@@ -56,7 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="2dp"
-        android:background="@color/simpleButtonTextColor"
+        android:background="@color/backgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

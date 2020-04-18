@@ -58,7 +58,7 @@ public class ChatMainActivity extends AppCompatActivity {
         populateDetails(0);
         Toolbar mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
-        mTopToolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        mTopToolbar.getOverflowIcon().setColorFilter(Color.parseColor("#008EFF"), PorterDuff.Mode.SRC_ATOP);
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
