@@ -4,6 +4,10 @@ JChat is an android real-time messaging or chatting application with the aim of 
 
 JChat is developed using Android and Firebase.
 
+## Updated UI
+![](Presentation/log.PNG)
+![](Presentation/sin.PNG)
+
 ## Presentation
 ![](Presentation/Slide1.PNG)
 ![](Presentation/Slide2.PNG)
