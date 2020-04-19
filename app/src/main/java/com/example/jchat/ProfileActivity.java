@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -147,6 +151,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             dr.child("name").setValue(name_string);
             dr.child("status").setValue(status_string);
             dr.child("language").setValue(lang_codes.get(chosenLangpos).toString());
+            uploadProfilePhoto(image_uri);
             if(chosenLangpos != 0)
             {
                 System.out.println("Calling update Language Preferences");
@@ -170,7 +175,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             }*/
         }
     }
-
 
 
     private boolean checkStoragePermission()
@@ -282,15 +286,21 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             if(requestCode == IMAGE_PICK_GALLERY_CODE)
             {
                 image_uri=data.getData();
-                uploadProfilePhoto(image_uri);
+                //uploadProfilePhoto(image_uri);
             }
 
             if(requestCode== IMAGE_PICK_CAMERA_CODE)
             {
-                uploadProfilePhoto(image_uri);
+                //uploadProfilePhoto(image_uri);
             }
+            Bitmap bitmap = null;
+            try {
+                bitmap = Images.Media.getBitmap(getContentResolver(), image_uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            profile.setImageBitmap(bitmap);
         }
-
 
         super.onActivityResult( requestCode, resultCode, data );
     }
@@ -346,9 +356,9 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         ContentValues values= new ContentValues( );
         System.out.println( "Camera" );
-        values.put( MediaStore.Images.Media.TITLE,"Temp pic");
-        values.put( MediaStore.Images.Media.DESCRIPTION,"Temp description");
-        image_uri=ProfileActivity.this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        values.put( Images.Media.TITLE,"Temp pic");
+        values.put( Images.Media.DESCRIPTION,"Temp description");
+        image_uri=ProfileActivity.this.getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI,values);
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
         startActivityForResult( cameraIntent,IMAGE_PICK_CAMERA_CODE);
@@ -398,8 +408,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             }
         });
     }
-
-
 
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

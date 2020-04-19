@@ -52,6 +52,7 @@ public class StartActivity extends AppCompatActivity {
         startActivity(in);
         finish();
     }
+
     protected void sendUserToProfileActivity()
     {
         Intent in = new Intent(StartActivity.this,ProfileActivity.class);
