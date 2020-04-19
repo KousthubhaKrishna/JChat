@@ -20,6 +20,7 @@ public class StartActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     DatabaseReference rootRef;
+    int i=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,16 @@ public class StartActivity extends AppCompatActivity {
         startActivity(in);
     }
 
-    protected void sendUserToChatMainActivity()
-    {
-        Intent in = new Intent(StartActivity.this,ChatMainActivity.class);
-        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(in);
-        finish();
+    protected void sendUserToChatMainActivity(int i) {
+        if (i == 0) {
+            i=1;
+            Toast.makeText(StartActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+            Intent in = new Intent(StartActivity.this, ChatMainActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(in);
+            finish();
+        }
     }
-
     protected void sendUserToProfileActivity()
     {
         Intent in = new Intent(StartActivity.this,ProfileActivity.class);
@@ -62,7 +65,15 @@ public class StartActivity extends AppCompatActivity {
     protected void verifyUserExistance()
     {
         String currentUserUid = currentUser.getUid();
-        rootRef.child("Users").child(currentUserUid).addValueEventListener(new ValueEventListener() {
+        if (currentUserUid!=null)
+        {
+            sendUserToChatMainActivity(i);
+        }
+        else
+        {
+            sendUserToProfileActivity();
+        }
+        /*rootRef.child("Users").child(currentUserUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("name").exists())
@@ -72,8 +83,7 @@ public class StartActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Toast.makeText(StartActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-                        sendUserToChatMainActivity();
+                        sendUserToChatMainActivity(i);
                     }
                 }
             }
@@ -82,7 +92,7 @@ public class StartActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println(databaseError);
             }
-        });
+        });*/
     }
 
 }

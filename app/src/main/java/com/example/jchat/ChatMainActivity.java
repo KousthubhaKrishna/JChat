@@ -34,7 +34,7 @@ public class ChatMainActivity extends AppCompatActivity {
     DatabaseReference rootRef;
     FirebaseUser currentUser;
     String currentUserId;
-    ArrayList<String> contactNames, status, friendUid, chatId;
+    ArrayList<String> contactNames, status, friendUid, chatId, profile_url;
     ChatAdapter adt;
     ListView lv;
     TabLayout tabLayout;
@@ -54,6 +54,7 @@ public class ChatMainActivity extends AppCompatActivity {
         status = new ArrayList<String>();
         friendUid = new ArrayList<String>();
         chatId = new ArrayList<String>();
+        profile_url = new ArrayList<String>();
 
         populateDetails(0);
         Toolbar mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,6 +75,7 @@ public class ChatMainActivity extends AppCompatActivity {
                 status.clear();
                 friendUid.clear();
                 chatId.clear();
+                profile_url.clear();
                 lv.setAdapter(null);
             }
 
@@ -101,6 +103,7 @@ public class ChatMainActivity extends AppCompatActivity {
                         chid = entry.getKey();
                     }
                     if (cid.equals(category)) {
+                        profile_url.add(dataSnapshot.child(ds.getKey()).child("dp").getValue().toString());
                         friendUid.add(ds.getKey());
                         chatId.add(chid);
                         contactNames.add(dataSnapshot.child(ds.getKey()).child("name").getValue().toString());
@@ -109,7 +112,8 @@ public class ChatMainActivity extends AppCompatActivity {
                 }
                 String[] contactNamesArray = contactNames.toArray(new String[contactNames.size()]);
                 String[] statusArray = status.toArray(new String[status.size()]);
-                adt = new ChatAdapter(ChatMainActivity.this, contactNamesArray, statusArray, null);
+                String[] profileArray= profile_url.toArray(new String[profile_url.size()]);
+                adt = new ChatAdapter(ChatMainActivity.this, contactNamesArray, statusArray,profileArray );
                 lv.setAdapter(adt);
                 registerForContextMenu(lv);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -180,21 +184,21 @@ public class ChatMainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.options_logout) {
             mAuth.signOut();
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-            sendUserToLoginActvity();
+            sendUserToLoginActivity();
         } else if (item.getItemId() == R.id.options_settings) {
             sendUserToProfileActivity();
         } else if (item.getItemId() == R.id.options_find_friends) {
-            sendUserToFindFriendsActvity();
+            sendUserToFindFriendsActivity();
         }
         return true;
     }
 
-    private void sendUserToFindFriendsActvity() {
+    private void sendUserToFindFriendsActivity() {
         Intent in = new Intent(ChatMainActivity.this, FindFriendsActivity.class);
         startActivity(in);
     }
 
-    public void sendUserToLoginActvity() {
+    public void sendUserToLoginActivity() {
         Intent in = new Intent(ChatMainActivity.this, MainActivity.class);
         startActivity(in);
     }

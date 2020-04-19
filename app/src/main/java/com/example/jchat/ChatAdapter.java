@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class ChatAdapter extends ArrayAdapter {
 
     private final Activity context;
@@ -35,7 +37,16 @@ public class ChatAdapter extends ArrayAdapter {
         ImageView profilePic = (ImageView)rowView.findViewById(R.id.message_pic);
         contactName.setText(contactNames[position]);
         lastMessage.setText(lastMessages[position]);
-        profilePic.setImageResource(R.drawable.user_icon);
+        try {
+            if(contactImageURLs[position].equals("")) {
+                Picasso.get().load(R.drawable.user_icon).into(profilePic);
+            }
+            else{
+                Picasso.get().load(contactImageURLs[position]).into(profilePic);
+            }
+        } catch (Exception e) {
+            Picasso.get().load(R.drawable.user_icon).into(profilePic);
+        }
         return rowView;
     }
 }

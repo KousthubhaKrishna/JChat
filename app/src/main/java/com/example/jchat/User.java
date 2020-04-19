@@ -1,9 +1,9 @@
 package com.example.jchat;
 
 public class User{
-    public String uid,name,status,email,friends,language;
+    public String uid,name,status,email,friends,language,dp;
 
-    public User(String uid,String name,String status,String email,String friends,String language)
+    public User(String uid,String name,String status,String email,String friends,String language,String dp)
     {
         this.uid = uid;
         this.name = name;
@@ -11,6 +11,7 @@ public class User{
         this.email = email;
         this.friends = friends;
         this.language = language;
+        this.dp = dp;
     }
 }
 

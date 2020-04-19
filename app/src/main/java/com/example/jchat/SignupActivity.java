@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String userId = user.getUid();
-                                rootRef.child("Users").child(userId).setValue(new User(user.getUid(),"","",user.getEmail(),"","11"));
+                                rootRef.child("Users").child(userId).setValue(new User(user.getUid(),"","",user.getEmail(),"","11",""));
                                 Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_LONG).show();
                                 sendUserToMainActivity(null);
                             } else {
