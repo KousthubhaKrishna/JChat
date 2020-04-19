@@ -20,7 +20,6 @@ public class StartActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     DatabaseReference rootRef;
-    int i=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +45,12 @@ public class StartActivity extends AppCompatActivity {
         startActivity(in);
     }
 
-    protected void sendUserToChatMainActivity(int i) {
-        if (i == 0) {
-            i=1;
-            Toast.makeText(StartActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-            Intent in = new Intent(StartActivity.this, ChatMainActivity.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(in);
-            finish();
-        }
+    protected void sendUserToChatMainActivity() {
+        Toast.makeText(StartActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+        Intent in = new Intent(StartActivity.this, ChatMainActivity.class);
+        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(in);
+        finish();
     }
     protected void sendUserToProfileActivity()
     {
@@ -65,25 +61,17 @@ public class StartActivity extends AppCompatActivity {
     protected void verifyUserExistance()
     {
         String currentUserUid = currentUser.getUid();
-        if (currentUserUid!=null)
-        {
-            sendUserToChatMainActivity(i);
-        }
-        else
-        {
-            sendUserToProfileActivity();
-        }
-        /*rootRef.child("Users").child(currentUserUid).addValueEventListener(new ValueEventListener() {
+        rootRef.child("Users").child(currentUserUid).child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("name").exists())
+                if(dataSnapshot.exists())
                 {
-                    if(dataSnapshot.child("name").getValue().toString().isEmpty()) {
+                    if(dataSnapshot.getValue().toString().isEmpty()) {
                         sendUserToProfileActivity();
                     }
                     else
                     {
-                        sendUserToChatMainActivity(i);
+                        sendUserToChatMainActivity();
                     }
                 }
             }
@@ -92,7 +80,7 @@ public class StartActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println(databaseError);
             }
-        });*/
+        });
     }
 
 }
