@@ -3,6 +3,7 @@ package com.example.jchat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -12,9 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +47,7 @@ public class ChatMainActivity extends AppCompatActivity {
     ChatAdapter adt;
     ListView lv;
     TabLayout tabLayout;
+    String emailqr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +102,8 @@ public class ChatMainActivity extends AppCompatActivity {
         rootRef.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Qr code
+                emailqr = dataSnapshot.child(currentUserId).child("email").getValue().toString();
                 DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
                 for (DataSnapshot ds : dats.getChildren()) {
                     GenericTypeIndicator<HashMap<String, String>> t = new GenericTypeIndicator<HashMap<String, String>>() {
@@ -208,4 +220,25 @@ public class ChatMainActivity extends AppCompatActivity {
         startActivity(in);
     }
 
+    public void showQr(View view) {
+        CardView card = (CardView)findViewById(R.id.card);
+        ImageView qrImage = findViewById(R.id.qr_image);
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(emailqr, BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            qrImage.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        if(card.getVisibility() == card.VISIBLE)
+        {
+            card.setVisibility(card.INVISIBLE);
+        }
+        else
+        {
+            card.setVisibility(card.VISIBLE);
+        }
+    }
 }

@@ -49,5 +49,8 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
 }
 configurations.implementation.exclude(group: 'com.google.protobuf', module: 'protobuf-lite')
