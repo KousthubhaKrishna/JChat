@@ -13,6 +13,10 @@
         android:title="Settings">
     </item>
     <item
+        android:id="@+id/options_password"
+        android:title="Set Password">
+    </item>
+    <item
         android:id="@+id/options_logout"
         android:title="Logout">
     </item>

@@ -1,26 +1,35 @@
 package com.example.jchat;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -204,6 +213,36 @@ public class ChatMainActivity extends AppCompatActivity {
             sendUserToProfileActivity();
         } else if (item.getItemId() == R.id.options_find_friends) {
             sendUserToFindFriendsActivity();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Set Password");
+            builder.setMessage("Enter the password for your chats");
+            LayoutInflater layoutInflater = getLayoutInflater();
+            View v = layoutInflater.inflate(R.id.,null);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final String passwordEntered;
+                    mAuth.signInWithEmailAndPassword(emailqr,passwordEntered)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful())
+                                    {
+                                        rootRef.child("Users").child(currentUserId).child("pass_code").setValue(passwordEntered);
+                                        Toast.makeText(ChatMainActivity.this, "Chat Lock Set", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(ChatMainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+            });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
         }
         return true;
     }
