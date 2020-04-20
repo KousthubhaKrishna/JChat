@@ -219,23 +219,27 @@ public class ChatMainActivity extends AppCompatActivity {
             builder.setTitle("Set Password");
             builder.setMessage("Enter the password for your chats");
             LayoutInflater layoutInflater = getLayoutInflater();
-            View v = layoutInflater.inflate(R.id.,null);
+            final View v = layoutInflater.inflate(R.layout.activity_lock,null);
+            builder.setView(v);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    final String passwordEntered;
+                    final EditText password = v.findViewById(R.id.password_lock);
+                    final EditText passcode = v.findViewById(R.id.passcode_lock);
+                    final String passwordEntered = password.getText().toString();
+                    final String passcodeEntered = passcode.getText().toString();
                     mAuth.signInWithEmailAndPassword(emailqr,passwordEntered)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful())
                                     {
-                                        rootRef.child("Users").child(currentUserId).child("pass_code").setValue(passwordEntered);
+                                        rootRef.child("Users").child(currentUserId).child("pass_code").setValue(passcodeEntered);
                                         Toast.makeText(ChatMainActivity.this, "Chat Lock Set", Toast.LENGTH_SHORT).show();
                                     }
                                     else
                                     {
-                                        Toast.makeText(ChatMainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChatMainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
