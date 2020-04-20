@@ -151,7 +151,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             dr.child("name").setValue(name_string);
             dr.child("status").setValue(status_string);
             dr.child("language").setValue(lang_codes.get(chosenLangpos).toString());
-            uploadProfilePhoto(image_uri);
+            if(image_uri != null)
+                uploadProfilePhoto(image_uri);
             if(chosenLangpos != 0)
             {
                 System.out.println("Calling update Language Preferences");
@@ -392,13 +393,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
                 try {
                     if(dp.equals("")) {
-                        Picasso.get().load(R.drawable.user_icon).into(profile);
+                        Picasso.get().load(R.drawable.dp).into(profile);
                     }
                     else{
                         Picasso.get().load(dp).into(profile);
                     }
                 } catch (Exception e) {
-                    Picasso.get().load(R.drawable.user_icon).into(profile);
+                    Picasso.get().load(R.drawable.dp).into(profile);
                 }
             }
 

@@ -39,13 +39,13 @@ public class ChatAdapter extends ArrayAdapter {
         lastMessage.setText(lastMessages[position]);
         try {
             if(contactImageURLs[position].equals("")) {
-                Picasso.get().load(R.drawable.user_icon).into(profilePic);
+                Picasso.get().load(R.drawable.dp).into(profilePic);
             }
             else{
                 Picasso.get().load(contactImageURLs[position]).into(profilePic);
             }
         } catch (Exception e) {
-            Picasso.get().load(R.drawable.user_icon).into(profilePic);
+            Picasso.get().load(R.drawable.dp).into(profilePic);
         }
         return rowView;
     }

@@ -9,26 +9,21 @@
 
     <ImageView
         android:id="@+id/find_friends_image"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="120dp"
-        android:src="@drawable/add_friend"
+        android:layout_width="252dp"
+        android:layout_height="237dp"
+        android:layout_marginTop="108dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@mipmap/add_friend" />
 
     <EditText
         android:id="@+id/find_friend_email"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:alpha="0.8"
+        android:layout_marginTop="16dp"
+        android:alpha="0.95"
         android:background="@drawable/text_field"
         android:ems="10"
         android:hint="Enter Email"
@@ -39,18 +34,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/find_friends_image" />
 
-    <ImageButton
-        android:id="@+id/find_friend_search"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
-        android:alpha="0.8"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="22dp"
         android:background="@drawable/gradient"
-        android:onClick="searchUsers"
+        android:drawableLeft="@drawable/qr_logo"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Scan QR"
+        android:textColor="@color/backgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:onClick="sendToQrActivity"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="Or"
+        android:textColor="@color/backgroundColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/gradient"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Search"
+        android:textColor="@color/backgroundColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/find_friend_email"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        android:onClick="searchUsers"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

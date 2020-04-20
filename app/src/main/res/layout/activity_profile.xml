@@ -8,18 +8,17 @@
     tools:context=".ProfileActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/dp"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="60dp"
-        android:src="@drawable/user_icon"
-        app:civ_border_width="2dp"
+        android:src="@drawable/dp"
         app:civ_border_color="#FF000000"
-        android:id="@+id/dp"/>
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <!--<ImageView
         android:id="@+id/dp"
         android:layout_width="225dp"
@@ -37,7 +36,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
-        android:alpha="0.8"
+        android:alpha="0.95"
         android:background="@drawable/text_field"
         android:ems="10"
         android:hint="Name"
@@ -53,7 +52,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:alpha="0.8"
+        android:alpha="0.95"
         android:background="@drawable/text_field"
         android:ems="10"
         android:hint="Status"
@@ -83,7 +82,7 @@
         android:layout_width="233dp"
         android:layout_height="53dp"
         android:layout_marginTop="30dp"
-        android:alpha="0.8"
+        android:alpha="0.95"
         android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

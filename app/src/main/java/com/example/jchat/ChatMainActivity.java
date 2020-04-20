@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,7 +48,7 @@ public class ChatMainActivity extends AppCompatActivity {
     ChatAdapter adt;
     ListView lv;
     TabLayout tabLayout;
-    String emailqr;
+    String emailqr,nameqr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,8 @@ public class ChatMainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Qr code
                 emailqr = dataSnapshot.child(currentUserId).child("email").getValue().toString();
+                nameqr = dataSnapshot.child(currentUserId).child("name").getValue().toString();
+                //
                 DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
                 for (DataSnapshot ds : dats.getChildren()) {
                     GenericTypeIndicator<HashMap<String, String>> t = new GenericTypeIndicator<HashMap<String, String>>() {
@@ -223,22 +226,30 @@ public class ChatMainActivity extends AppCompatActivity {
     public void showQr(View view) {
         CardView card = (CardView)findViewById(R.id.card);
         ImageView qrImage = findViewById(R.id.qr_image);
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(emailqr, BarcodeFormat.QR_CODE,200,200);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            qrImage.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        if(card.getVisibility() == card.VISIBLE)
+        MultiFormatWriter multiFormatWriter = null;
+        if(multiFormatWriter == null)
         {
-            card.setVisibility(card.INVISIBLE);
+            multiFormatWriter = new MultiFormatWriter();
+            try {
+                BitMatrix bitMatrix = multiFormatWriter.encode(emailqr+" "+nameqr, BarcodeFormat.QR_CODE,200,200);
+                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                qrImage.setImageBitmap(bitmap);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+        }
+        if(card.getAlpha() == 0)
+        {
+            Log.i("Card Test","Visi");
+            card.animate().alpha(1).setDuration(200);
+            lv.animate().alpha((float)0.2).setDuration(200);
         }
         else
         {
-            card.setVisibility(card.VISIBLE);
+            Log.i("Card Test","Not visi");
+            card.animate().alpha(0).setDuration(200);
+            lv.animate().alpha((float)1).setDuration(200);
         }
     }
 }

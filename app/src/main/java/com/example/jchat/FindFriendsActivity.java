@@ -3,7 +3,9 @@ package com.example.jchat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,6 +36,15 @@ public class FindFriendsActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
+
+        Intent in  = getIntent();
+        String scanned_email = in.getStringExtra("scanned_email");
+        if(scanned_email!=null)
+        {
+            Log.i("Add Friend","Via qr");
+            searchEmailView.setText(scanned_email);
+            searchUsers(null);
+        }
     }
 
     public void searchUsers(View view)
@@ -86,5 +97,11 @@ public class FindFriendsActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void sendToQrActivity(View view) {
+        Intent in = new Intent(FindFriendsActivity.this,ScannerActivity.class);
+        startActivity(in);
+        finish();
     }
 }
