@@ -1,12 +1,15 @@
 package com.example.jchat;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,12 +40,13 @@ public class SingleChatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private String currentUserId;
-    private DatabaseReference rootRef,rf;
+    private DatabaseReference rootRef,rf,ref;
     private final List<Message> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesView;
     private int mylangcode=11;
+    boolean isLocked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -53,7 +57,7 @@ public class SingleChatActivity extends AppCompatActivity {
         Toolbar tb = (Toolbar) findViewById(R.id.single_chat_toolbar);
         tb.setTitle(in.getStringExtra("name"));
         chatId = in.getStringExtra("chatId");
-        friendUid = in.getStringExtra("friendUid");
+        friendUid = in.getStringExtra("friendUId");
         System.out.println("I am printing "+friendUid);
 
         sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -107,6 +111,23 @@ public class SingleChatActivity extends AppCompatActivity {
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("friends").child(friendUid).getRef();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("locked").toString().equals("true")) {
+                    isLocked = true;
+                }
+                else {
+                    isLocked = false;
+                }
             }
 
             @Override
@@ -207,5 +228,51 @@ public class SingleChatActivity extends AppCompatActivity {
             messageAdapter.notifyDataSetChanged();
             userMessagesView.scrollToPosition(messagesList.size()-1);
         }
+    }
+
+    public void toggleLock(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final ImageView im = (ImageView)findViewById(R.id.lockIv);
+        builder.setTitle("Confirm");
+        if(isLocked)
+        {
+            builder.setTitle("Unlock this chat ?");
+            builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ref.child("locked").setValue("false");
+                    isLocked = false;
+                    Toast.makeText(SingleChatActivity.this, "Unlocked", Toast.LENGTH_SHORT).show();
+                    im.setImageResource(R.drawable.ic_unlock);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+        }
+        else
+        {
+            builder.setTitle("Lock this chat ?");
+            builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ref.child("locked").setValue("true");
+                    isLocked = true;
+                    Toast.makeText(SingleChatActivity.this, "Locked", Toast.LENGTH_SHORT).show();
+                    im.setImageResource(R.drawable.ic_lock);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+        }
+        AlertDialog a1 = builder.create();
+        a1.show();
     }
 }

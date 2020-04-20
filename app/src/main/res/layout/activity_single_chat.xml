@@ -17,21 +17,11 @@
         android:paddingLeft="20dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Friend Name"
         app:titleTextColor="@color/tabBottom" />
-
-    <!--    <ScrollView-->
-    <!--        android:id="@+id/scroll_id"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/single_chat_message"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/single_chat_toolbar">-->
 
     <ImageView
         android:id="@+id/lockIv"
@@ -42,7 +32,8 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ic_lock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="toggleLock"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/display_chat"

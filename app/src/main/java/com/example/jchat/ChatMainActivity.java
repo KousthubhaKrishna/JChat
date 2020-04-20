@@ -118,6 +118,7 @@ public class ChatMainActivity extends AppCompatActivity {
                 //
                 DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
                 for (DataSnapshot ds : dats.getChildren()) {
+                    System.out.println(ds);
                     GenericTypeIndicator<HashMap<String, String>> t = new GenericTypeIndicator<HashMap<String, String>>() {
                     };
                     HashMap<String, String> hm = ds.getValue(t);
@@ -132,6 +133,7 @@ public class ChatMainActivity extends AppCompatActivity {
                         chatId.add(chid);
                         contactNames.add(dataSnapshot.child(ds.getKey()).child("name").getValue().toString());
                         status.add(dataSnapshot.child(ds.getKey()).child("status").getValue().toString());
+                        System.out.println(friendUid);
                     }
                 }
                 String[] contactNamesArray = contactNames.toArray(new String[contactNames.size()]);
@@ -146,7 +148,8 @@ public class ChatMainActivity extends AppCompatActivity {
                         Intent in = new Intent(ChatMainActivity.this, SingleChatActivity.class);
                         in.putExtra("name", contactNames.get(position));
                         in.putExtra("chatId", chatId.get(position));
-                        in.putExtra("friendUId", friendUid);
+                        in.putExtra("friendUId", friendUid.get(position));
+                        System.out.println(friendUid.get(position));
                         startActivity(in);
                     }
                 });
@@ -228,21 +231,24 @@ public class ChatMainActivity extends AppCompatActivity {
                     final EditText passcode = v.findViewById(R.id.passcode_lock);
                     final String passwordEntered = password.getText().toString();
                     final String passcodeEntered = passcode.getText().toString();
-                    mAuth.signInWithEmailAndPassword(emailqr,passwordEntered)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful())
-                                    {
-                                        rootRef.child("Users").child(currentUserId).child("pass_code").setValue(passcodeEntered);
-                                        Toast.makeText(ChatMainActivity.this, "Chat Lock Set", Toast.LENGTH_SHORT).show();
+                    if(passwordEntered.equals(""))
+                    {
+                        Toast.makeText(ChatMainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        mAuth.signInWithEmailAndPassword(emailqr, passwordEntered)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            rootRef.child("Users").child(currentUserId).child("pass_code").setValue(passcodeEntered);
+                                            Toast.makeText(ChatMainActivity.this, "Chat Lock Set", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(ChatMainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                    else
-                                    {
-                                        Toast.makeText(ChatMainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                                });
+                    }
                 }
             });
             AlertDialog alert1 = builder.create();
