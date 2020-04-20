@@ -122,11 +122,14 @@ public class SingleChatActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("locked").toString().equals("true")) {
+                final ImageView im = (ImageView)findViewById(R.id.lockIv);
+                if(dataSnapshot.child("locked").getValue().toString().equals("true")) { ;
                     isLocked = true;
+                    im.setImageResource(R.drawable.ic_lock);
                 }
                 else {
                     isLocked = false;
+                    im.setImageResource(R.drawable.ic_unlock);
                 }
             }
 
@@ -236,7 +239,7 @@ public class SingleChatActivity extends AppCompatActivity {
         builder.setTitle("Confirm");
         if(isLocked)
         {
-            builder.setTitle("Unlock this chat ?");
+            builder.setMessage("Unlock this chat ?");
             builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -255,7 +258,7 @@ public class SingleChatActivity extends AppCompatActivity {
         }
         else
         {
-            builder.setTitle("Lock this chat ?");
+            builder.setMessage("Lock this chat ?");
             builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -274,5 +277,13 @@ public class SingleChatActivity extends AppCompatActivity {
         }
         AlertDialog a1 = builder.create();
         a1.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent in = new Intent(SingleChatActivity.this,ChatMainActivity.class);
+        startActivity(in);
+        finish();
+        super.onBackPressed();
     }
 }

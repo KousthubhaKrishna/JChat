@@ -27,7 +27,6 @@
         <activity android:name=".FindFriendsActivity" />
         <activity android:name=".SingleChatActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".StartActivity" />
         <activity android:name=".ChatMainActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".TestActivity" />

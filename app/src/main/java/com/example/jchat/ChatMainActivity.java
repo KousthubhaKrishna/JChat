@@ -111,12 +111,12 @@ public class ChatMainActivity extends AppCompatActivity {
         final String category = getCategory(index);
         rootRef.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 //Qr code
                 emailqr = dataSnapshot.child(currentUserId).child("email").getValue().toString();
                 nameqr = dataSnapshot.child(currentUserId).child("name").getValue().toString();
                 //
-                DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
+                final DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
                 for (DataSnapshot ds : dats.getChildren()) {
                     System.out.println(ds);
                     GenericTypeIndicator<HashMap<String, String>> t = new GenericTypeIndicator<HashMap<String, String>>() {
@@ -133,11 +133,10 @@ public class ChatMainActivity extends AppCompatActivity {
                         chatId.add(chid);
                         contactNames.add(dataSnapshot.child(ds.getKey()).child("name").getValue().toString());
                         status.add(dataSnapshot.child(ds.getKey()).child("status").getValue().toString());
-                        System.out.println(friendUid);
                     }
                 }
                 String[] contactNamesArray = contactNames.toArray(new String[contactNames.size()]);
-                String[] statusArray = status.toArray(new String[status.size()]);
+                final String[] statusArray = status.toArray(new String[status.size()]);
                 String[] profileArray= profile_url.toArray(new String[profile_url.size()]);
                 adt = new ChatAdapter(ChatMainActivity.this, contactNamesArray, statusArray,profileArray );
                 lv.setAdapter(adt);
@@ -145,12 +144,44 @@ public class ChatMainActivity extends AppCompatActivity {
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent in = new Intent(ChatMainActivity.this, SingleChatActivity.class);
+                        final Intent in = new Intent(ChatMainActivity.this, SingleChatActivity.class);
                         in.putExtra("name", contactNames.get(position));
                         in.putExtra("chatId", chatId.get(position));
                         in.putExtra("friendUId", friendUid.get(position));
-                        System.out.println(friendUid.get(position));
-                        startActivity(in);
+                        String lock_status =dats.child(friendUid.get(position)).child("locked").getValue().toString();
+                        if(lock_status.equals("true"))
+                        {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ChatMainActivity.this);
+                            builder.setMessage("Password Check");
+                            LayoutInflater layoutInflater = getLayoutInflater();
+                            final View v = layoutInflater.inflate(R.layout.activity_lock,null);
+                            final EditText ed = new EditText(ChatMainActivity.this);
+                            ed.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            ed.setHint("Enter Pass-Code");
+                            builder.setView(ed);
+                            builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String passcode = ed.getText().toString();
+                                    String db_passcode = dataSnapshot.child(currentUserId).child("pass_code").getValue().toString();
+                                    if(db_passcode.equals(passcode))
+                                    {
+                                        startActivity(in);
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(ChatMainActivity.this, "Invalid Pass Code", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            AlertDialog alert1 = builder.create();
+                            alert1.show();
+                        }
+                        else {
+                            startActivity(in);
+                            finish();
+                        }
                     }
                 });
             }
