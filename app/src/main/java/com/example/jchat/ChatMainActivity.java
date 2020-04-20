@@ -225,7 +225,7 @@ public class ChatMainActivity extends AppCompatActivity {
 
     public void showQr(View view) {
         CardView card = (CardView)findViewById(R.id.card);
-        ImageView qrImage = findViewById(R.id.qr_image);
+        ImageView qrImage = (ImageView)findViewById(R.id.qr_image);
         MultiFormatWriter multiFormatWriter = null;
         if(multiFormatWriter == null)
         {
