@@ -68,7 +68,7 @@ public class SingleChatActivity extends AppCompatActivity {
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
 
-        messageAdapter = new MessageAdapter(messagesList);
+        messageAdapter = new MessageAdapter(messagesList,chatId);
         userMessagesView = (RecyclerView)findViewById(R.id.display_chat);
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesView.setLayoutManager(linearLayoutManager);
@@ -169,9 +169,8 @@ public class SingleChatActivity extends AppCompatActivity {
     }
 
 
-    public void translateAndSave(String text)
+    public void translateAndSave(final String text)
     {
-        final Message message = new Message(text,date,sdf.format(date),stf.format(date),currentUserId,friendUid);
         FirebaseTranslatorOptions options =
                 new FirebaseTranslatorOptions.Builder()
                         .setSourceLanguage(mylangcode)
@@ -185,8 +184,9 @@ public class SingleChatActivity extends AppCompatActivity {
                             public void onSuccess(@NonNull String translatedText) {
                                 // Translation successful.
                                 System.out.println("Translation Save Success "+translatedText);
-                                message.mes = translatedText;
                                 String messageID = rootRef.push().getKey();
+                                final Message message = new Message(messageID,text,date,sdf.format(date),stf.format(date),currentUserId,friendUid);
+                                message.mes = translatedText;
                                 rootRef.child(messageID).setValue(message);
                             }
                         })

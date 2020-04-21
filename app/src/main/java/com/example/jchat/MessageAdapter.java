@@ -21,10 +21,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String currentUserId;
+    String chatid;
 
-    public MessageAdapter(List<Message> userMessagesList)
+    public MessageAdapter(List<Message> userMessagesList,String chatid)
     {
         this.userMessagesList = userMessagesList;
+        this.chatid = chatid;
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder
@@ -48,14 +50,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-
-
         return new MessageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Message message = userMessagesList.get(position);
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
+        final Message message = userMessagesList.get(position);
         if(message.senderUId.equals(currentUserId) )
         {
             holder.senderMessage.setText(message.send_mes);
@@ -68,6 +68,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.receiverMessage.setVisibility(View.VISIBLE);
             holder.senderMessage.setVisibility(View.INVISIBLE);
         }
+        holder.senderMessage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                rootRef.child("Chats").child(chatid).child(message.mid).setValue(null);
+                return false;
+            }
+        });
     }
 
     @Override

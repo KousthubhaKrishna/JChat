@@ -9,14 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message {
-    public String mes,dateString,timeString,senderUId,receiverUid,send_mes,rec_mes="";
+    public String mid,mes,dateString,timeString,senderUId,receiverUid,send_mes,rec_mes="";
     Date date;
 
     public Message()
     {}
 
-    public Message(String send_mes,Date date,String dateString,String timeString,String senderUId,String receiverUid)
+    public Message(String mid,String send_mes,Date date,String dateString,String timeString,String senderUId,String receiverUid)
     {
+        this.mid =mid;
         this.send_mes = send_mes;
         this.date = date;
         this.dateString = dateString;
