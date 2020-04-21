@@ -3,11 +3,13 @@ package com.example.jchat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +36,7 @@ import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +57,7 @@ public class SingleChatActivity extends AppCompatActivity {
     private int mylangcode=11;
     boolean isLocked = false;
     String onoroff;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -187,6 +196,7 @@ public class SingleChatActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void sendMessage(View view)
@@ -328,4 +338,5 @@ public class SingleChatActivity extends AppCompatActivity {
         //rf.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
         super.onDestroy();
     }
+
 }
