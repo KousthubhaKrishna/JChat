@@ -58,7 +58,6 @@ public class SingleChatActivity extends AppCompatActivity {
         tb.setTitle(in.getStringExtra("name"));
         chatId = in.getStringExtra("chatId");
         friendUid = in.getStringExtra("friendUId");
-        System.out.println("I am printing "+friendUid);
 
         sdf = new SimpleDateFormat("dd-MMM-yyyy");
         stf = new SimpleDateFormat("HH:mm");
@@ -83,7 +82,6 @@ public class SingleChatActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String code = dataSnapshot.child("language").getValue().toString();
                         mylangcode = Integer.parseInt(code);
-                        System.out.println("My language code "+code);
                     }
 
                     @Override

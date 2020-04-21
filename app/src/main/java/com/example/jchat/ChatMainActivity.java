@@ -119,7 +119,6 @@ public class ChatMainActivity extends AppCompatActivity {
                 //
                 final DataSnapshot dats = dataSnapshot.child(currentUserId).child("friends");
                 for (DataSnapshot ds : dats.getChildren()) {
-                    System.out.println(ds);
                     GenericTypeIndicator<HashMap<String, String>> t = new GenericTypeIndicator<HashMap<String, String>>() {
                     };
                     HashMap<String, String> hm = ds.getValue(t);
