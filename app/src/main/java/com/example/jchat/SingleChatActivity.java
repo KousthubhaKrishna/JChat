@@ -41,10 +41,10 @@ public class SingleChatActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private String currentUserId;
     private DatabaseReference rootRef,rf,ref;
-    private final List<Message> messagesList = new ArrayList<>();
+    final List<Message> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
-    private MessageAdapter messageAdapter;
-    private RecyclerView userMessagesView;
+    MessageAdapter messageAdapter;
+    RecyclerView userMessagesView;
     private int mylangcode=11;
     boolean isLocked = false;
     @Override
@@ -68,12 +68,12 @@ public class SingleChatActivity extends AppCompatActivity {
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
 
-        messageAdapter = new MessageAdapter(messagesList,chatId);
+
         userMessagesView = (RecyclerView)findViewById(R.id.display_chat);
+        messageAdapter = new MessageAdapter(messagesList,chatId);
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesView.setLayoutManager(linearLayoutManager);
         userMessagesView.setAdapter(messageAdapter);
-        userMessagesView = (RecyclerView)findViewById(R.id.display_chat);
 
         rf = FirebaseDatabase.getInstance().getReference();
         rf.child("Users").child(currentUserId).addListenerForSingleValueEvent(
@@ -119,7 +119,20 @@ public class SingleChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                System.out.println("Here Removed");
+                Message message = dataSnapshot.getValue(Message.class);
+                int ind = 0;
+                for(Message lo : messagesList)
+                {
+                    if(lo.mid.equals(message.mid))
+                    {
+                        break;
+                    }
+                    ind++;
+                }
+                messagesList.remove(ind);
+                messageAdapter.notifyDataSetChanged();
+                userMessagesView.scrollToPosition(messagesList.size() - 1);
             }
 
             @Override

@@ -22,17 +22,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     FirebaseUser currentUser;
     String currentUserId;
     String chatid;
+    View rootView;
 
     public MessageAdapter(List<Message> userMessagesList,String chatid)
     {
-        this.userMessagesList = userMessagesList;
         this.chatid = chatid;
+        this.userMessagesList=userMessagesList;
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder
     {
         public TextView senderMessage,receiverMessage;
-
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMessage = (TextView)itemView.findViewById(R.id.sent_message);
@@ -43,18 +43,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        rootView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.custom_message_layout,parent,false);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        return new MessageViewHolder(view);
+        return new MessageViewHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, final int position) {
         final Message message = userMessagesList.get(position);
         if(message.senderUId.equals(currentUserId) )
         {

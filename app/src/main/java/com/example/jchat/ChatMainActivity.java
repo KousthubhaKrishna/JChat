@@ -342,6 +342,7 @@ public class ChatMainActivity extends AppCompatActivity {
     private void sendUserToFindFriendsActivity() {
         Intent in = new Intent(ChatMainActivity.this, FindFriendsActivity.class);
         startActivity(in);
+        finish();
     }
 
     public void sendUserToLoginActivity() {

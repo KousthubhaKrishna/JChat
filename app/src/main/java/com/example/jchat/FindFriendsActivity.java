@@ -106,4 +106,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         startActivity(in);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent in = new Intent(FindFriendsActivity.this,ChatMainActivity.class);
+        startActivity(in);
+        finish();
+    }
 }
