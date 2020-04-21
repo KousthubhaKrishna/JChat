@@ -51,6 +51,16 @@
             android:text="Others" />
     </com.google.android.material.tabs.TabLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="wrap_content"

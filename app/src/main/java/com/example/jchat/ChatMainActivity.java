@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -23,10 +26,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -59,6 +70,11 @@ public class ChatMainActivity extends AppCompatActivity {
     ListView lv;
     TabLayout tabLayout;
     String emailqr,nameqr;
+
+    //Location Variable
+    private static final int REQUEST_CODE_LOCATION_PERMISSION=1;
+    private TextView textLatLong;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +122,18 @@ public class ChatMainActivity extends AppCompatActivity {
             }
         });
 
+        // Permission for location access
+        progressBar = findViewById(R.id.progressBar);
+        if(ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+        )!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(ChatMainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_LOCATION_PERMISSION
+            );
+        }
+        else {
+            getCurrentLocation();
+        }
     }
 
     public void populateDetails(int index) {
@@ -383,5 +411,40 @@ public class ChatMainActivity extends AppCompatActivity {
             card.animate().alpha(0).setDuration(200);
             lv.animate().alpha((float)1).setDuration(200);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length>0){
+            getCurrentLocation();
+        }else{
+            Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getCurrentLocation(){
+        progressBar.setVisibility(View.VISIBLE);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(locationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.getFusedLocationProviderClient(ChatMainActivity.this)
+                .requestLocationUpdates(locationRequest,new LocationCallback(){
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        super.onLocationResult(locationResult);
+                        LocationServices.getFusedLocationProviderClient(ChatMainActivity.this)
+                                .removeLocationUpdates(this);
+                        if(locationResult!=null && locationResult.getLocations().size()>0){
+                            int latestLocationIndex = locationResult.getLocations().size()-1;
+                            double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                            double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                            rootRef.child("Users").child(currentUserId).child("location").child("latitude").setValue(latitude);
+                            rootRef.child("Users").child(currentUserId).child("location").child("longitude").setValue(longitude);
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }, Looper.getMainLooper());
     }
 }

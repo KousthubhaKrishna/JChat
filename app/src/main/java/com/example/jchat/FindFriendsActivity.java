@@ -114,4 +114,10 @@ public class FindFriendsActivity extends AppCompatActivity {
         startActivity(in);
         finish();
     }
+
+    public void sendUserToLocationActivity(View view) {
+        Intent in = new Intent(FindFriendsActivity.this,LocationActivity.class);
+        startActivity(in);
+        finish();
+    }
 }
