@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,8 @@ public class SingleChatActivity extends AppCompatActivity {
     RecyclerView userMessagesView;
     private int mylangcode=11;
     boolean isLocked = false;
+    String onoroff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,8 +57,9 @@ public class SingleChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_single_chat);
 
         Intent in = getIntent();
-        Toolbar tb = (Toolbar) findViewById(R.id.single_chat_toolbar);
-        tb.setTitle(in.getStringExtra("name"));
+        TextView name = findViewById(R.id.frndTv);
+        final TextView online = findViewById(R.id.onoroffTv);
+        name.setText(in.getStringExtra("name"));
         chatId = in.getStringExtra("chatId");
         friendUid = in.getStringExtra("friendUId");
 
@@ -66,7 +70,9 @@ public class SingleChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
-        rootRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        rootRef = rootRef.child("Chats").child(chatId);
 
 
         userMessagesView = (RecyclerView)findViewById(R.id.display_chat);
@@ -90,6 +96,21 @@ public class SingleChatActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        rf.child("Users").child(friendUid).child("onOrOff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("On Or Off");
+                onoroff = dataSnapshot.getValue().toString();
+                online.setText(onoroff);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         rootRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -300,5 +321,11 @@ public class SingleChatActivity extends AppCompatActivity {
         startActivity(in);
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        //rf.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
+        super.onDestroy();
     }
 }

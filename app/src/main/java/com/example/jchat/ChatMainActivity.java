@@ -58,7 +58,21 @@ public class ChatMainActivity extends AppCompatActivity {
     ChatAdapter adt;
     ListView lv;
     TabLayout tabLayout;
-    String emailqr,nameqr;
+    String emailqr, nameqr;
+    boolean flag = true;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!MyApplication.wasInBg){
+            System.out.println("Was In background");
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");}
+        else {
+            System.out.println("Was In Foreground");
+            flag=false;
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +83,7 @@ public class ChatMainActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
 
         lv = (ListView) findViewById(R.id.messages);
         contactNames = new ArrayList<String>();
@@ -108,6 +123,11 @@ public class ChatMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     public void populateDetails(int index) {
         final String category = getCategory(index);
         rootRef.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,11 +154,13 @@ public class ChatMainActivity extends AppCompatActivity {
                         chatId.add(chid);
                         contactNames.add(dataSnapshot.child(ds.getKey()).child("name").getValue().toString());
                         status.add(dataSnapshot.child(ds.getKey()).child("status").getValue().toString());
+                        System.out.println(contactNames);
                     }
                 }
                 String[] contactNamesArray = contactNames.toArray(new String[contactNames.size()]);
-                final String[] statusArray = status.toArray(new String[status.size()]);
+                String[] statusArray = status.toArray(new String[status.size()]);
                 String[] profileArray= profile_url.toArray(new String[profile_url.size()]);
+                System.out.println("Here"+contactNamesArray.length);
                 adt = new ChatAdapter(ChatMainActivity.this, contactNamesArray, statusArray,profileArray );
                 lv.setAdapter(adt);
                 registerForContextMenu(lv);
@@ -174,7 +196,6 @@ public class ChatMainActivity extends AppCompatActivity {
 
                             final AlertDialog alert1 = builder.create();
                             alert1.show();
-                            alert1.getWindow().setLayout(800,500);
 
                             alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
                             {
@@ -185,6 +206,7 @@ public class ChatMainActivity extends AppCompatActivity {
                                     String db_passcode = dataSnapshot.child(currentUserId).child("pass_code").getValue().toString();
                                     if (db_passcode.equals(passcode)) {
                                         startActivity(in);
+                                        flag=false;
                                         finish();
                                     } else {
                                         Toast.makeText(ChatMainActivity.this, "Invalid Pass Code", Toast.LENGTH_SHORT).show();
@@ -203,6 +225,7 @@ public class ChatMainActivity extends AppCompatActivity {
                         }
                         else {
                             startActivity(in);
+                            flag=false;
                             finish();
                         }
                     }
@@ -294,7 +317,6 @@ public class ChatMainActivity extends AppCompatActivity {
 
             final AlertDialog alert1 = builder.create();
             alert1.show();
-
             alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -348,6 +370,7 @@ public class ChatMainActivity extends AppCompatActivity {
     public void sendUserToLoginActivity() {
         Intent in = new Intent(ChatMainActivity.this, MainActivity.class);
         startActivity(in);
+        finish();
     }
 
     protected void sendUserToProfileActivity() {
@@ -384,4 +407,31 @@ public class ChatMainActivity extends AppCompatActivity {
             lv.animate().alpha((float)1).setDuration(200);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
+        super.onBackPressed();
+    }
+
+    /*@Override
+    protected void onDestroy() {
+        System.out.println("Destroy"+flag);
+        if(flag) {
+            System.out.println("Destroyyyyyyyyyyyyyyyy");
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
+        }
+        super.onDestroy();
+    }*/
+
+    @Override
+    protected void onPause() {
+        System.out.println("Pause"+flag);
+        //if(flag) {
+            System.out.println("Pauseeeeeee");
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
+        //}
+        super.onPause();
+    }
+
 }

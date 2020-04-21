@@ -36,6 +36,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
 
         Intent in  = getIntent();
         String scanned_email = in.getStringExtra("scanned_email");

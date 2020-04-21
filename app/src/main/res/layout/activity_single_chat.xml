@@ -14,14 +14,39 @@
         android:alpha="0.8"
         android:background="@color/logoBackground"
         android:minHeight="?attr/actionBarSize"
-        android:paddingLeft="20dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Friend Name"
-        app:titleTextColor="@color/tabBottom" />
+        app:titleTextColor="@color/tabBottom">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="11dp"
+            android:orientation="vertical"
+            android:layout_marginStart="30dp">
+
+            <TextView
+                android:id="@+id/frndTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tabBottom"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="20dp"
+                tools:layout_editor_absoluteY="21dp" />
+        <TextView
+            android:id="@+id/onoroffTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
 
     <ImageView
         android:id="@+id/lockIv"
