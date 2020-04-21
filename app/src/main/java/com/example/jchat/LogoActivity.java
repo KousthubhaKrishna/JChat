@@ -34,7 +34,7 @@ public class LogoActivity extends AppCompatActivity {
             public void run() {
                 onStarted();
             }
-        },3000);
+        },2500);
     }
 
     protected void onStarted() {

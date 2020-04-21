@@ -118,6 +118,7 @@ public class SingleChatActivity extends AppCompatActivity {
 
             }
         });
+
         ref = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("friends").child(friendUid).getRef();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -277,6 +278,7 @@ public class SingleChatActivity extends AppCompatActivity {
         }
         AlertDialog a1 = builder.create();
         a1.show();
+        a1.getWindow().setLayout(800,450);
     }
 
     @Override

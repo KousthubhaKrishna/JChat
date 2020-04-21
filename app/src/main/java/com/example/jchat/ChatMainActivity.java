@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -154,29 +155,51 @@ public class ChatMainActivity extends AppCompatActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(ChatMainActivity.this);
                             builder.setMessage("Password Check");
                             LayoutInflater layoutInflater = getLayoutInflater();
-                            final View v = layoutInflater.inflate(R.layout.activity_lock,null);
-                            final EditText ed = new EditText(ChatMainActivity.this);
-                            ed.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            ed.setHint("Enter Pass-Code");
-                            builder.setView(ed);
+                            final View v = layoutInflater.inflate(R.layout.activity_test,null);
+                            final EditText ed = v.findViewById(R.id.passcode_check);
+                            //ed.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            //ed.setHint("Enter Pass-Code");
+                            builder.setView(v);
                             builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    String passcode = ed.getText().toString();
+                                }
+
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+
+                            final AlertDialog alert1 = builder.create();
+                            alert1.show();
+                            alert1.getWindow().setLayout(800,500);
+
+                            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    final String passcode = ed.getText().toString();
                                     String db_passcode = dataSnapshot.child(currentUserId).child("pass_code").getValue().toString();
-                                    if(db_passcode.equals(passcode))
-                                    {
+                                    if (db_passcode.equals(passcode)) {
                                         startActivity(in);
                                         finish();
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         Toast.makeText(ChatMainActivity.this, "Invalid Pass Code", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-                            AlertDialog alert1 = builder.create();
-                            alert1.show();
+
+                            alert1.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    alert1.dismiss();
+                                }
+                            });
                         }
                         else {
                             startActivity(in);
@@ -254,17 +277,39 @@ public class ChatMainActivity extends AppCompatActivity {
             builder.setMessage("Enter the password for your chats");
             LayoutInflater layoutInflater = getLayoutInflater();
             final View v = layoutInflater.inflate(R.layout.activity_lock,null);
+            final EditText password = v.findViewById(R.id.password_lock);
+            final EditText passcode = v.findViewById(R.id.passcode_lock);
             builder.setView(v);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    final EditText password = v.findViewById(R.id.password_lock);
-                    final EditText passcode = v.findViewById(R.id.passcode_lock);
+
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+
+            final AlertDialog alert1 = builder.create();
+            alert1.show();
+            alert1.getWindow().setLayout(910,750);
+
+            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
                     final String passwordEntered = password.getText().toString();
                     final String passcodeEntered = passcode.getText().toString();
-                    if(passwordEntered.equals(""))
+                    if( passwordEntered.isEmpty() || passcodeEntered.isEmpty())
                     {
-                        Toast.makeText(ChatMainActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatMainActivity.this, "Provide both Password and Pass-Code", Toast.LENGTH_SHORT).show();
+                    }
+                    else if( passcodeEntered.length() < 4)
+                    {
+                        Toast.makeText(ChatMainActivity.this, "Enter Pass-Code of at least 4 digits", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         mAuth.signInWithEmailAndPassword(emailqr, passwordEntered)
@@ -280,10 +325,17 @@ public class ChatMainActivity extends AppCompatActivity {
                                     }
                                 });
                     }
+               }
+            });
+
+            alert1.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    alert1.dismiss();
                 }
             });
-            AlertDialog alert1 = builder.create();
-            alert1.show();
         }
         return true;
     }

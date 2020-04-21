@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
     public void loginCheck(View view)
     {
         EditText email = (EditText)findViewById(R.id.jemail);
-        String emailString = email.getText().toString();
+        String emailString = email.getText().toString().trim();
         EditText password = (EditText)findViewById(R.id.jpassword);
-        String passwordString = password.getText().toString();
+        String passwordString = password.getText().toString().trim();
 
-        if(emailString.isEmpty() || passwordString.isEmpty() || emailString==null || passwordString == null)
+        if(emailString.isEmpty() || passwordString.isEmpty())
         {
 
             Toast.makeText(MainActivity.this, "Please provide both E-mail and Password", Toast.LENGTH_LONG).show();
