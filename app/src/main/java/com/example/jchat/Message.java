@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message {
-    public String mes,dateString,timeString,senderUId,receiverUid,send_mes,rec_mes;
+    public String mes,dateString,timeString,senderUId,receiverUid,send_mes,rec_mes="";
     Date date;
 
     public Message()

@@ -127,6 +127,7 @@ public class ChatMainActivity extends AppCompatActivity {
                     for (HashMap.Entry<String, String> entry : hm.entrySet()) {
                         cid = entry.getValue();
                         chid = entry.getKey();
+                        break;
                     }
                     if (cid.equals(category)) {
                         profile_url.add(dataSnapshot.child(ds.getKey()).child("dp").getValue().toString());
@@ -294,7 +295,6 @@ public class ChatMainActivity extends AppCompatActivity {
 
             final AlertDialog alert1 = builder.create();
             alert1.show();
-            alert1.getWindow().setLayout(910,750);
 
             alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
             {

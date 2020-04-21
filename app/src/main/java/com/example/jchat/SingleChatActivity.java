@@ -95,7 +95,23 @@ public class SingleChatActivity extends AppCompatActivity {
         rootRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                translateAndAdd(dataSnapshot);
+                Message message = dataSnapshot.getValue(Message.class);
+                if(message.senderUId.equals(currentUserId))
+                {
+                    messagesList.add(message);
+                    messageAdapter.notifyDataSetChanged();
+                    userMessagesView.scrollToPosition(messagesList.size() - 1);
+                }
+                else if(message.rec_mes.length()>0)
+                {
+                    messagesList.add(message);
+                    messageAdapter.notifyDataSetChanged();
+                    userMessagesView.scrollToPosition(messagesList.size() - 1);
+                }
+                else
+                {
+                    translateAndAdd(dataSnapshot);
+                }
             }
 
             @Override
@@ -180,21 +196,15 @@ public class SingleChatActivity extends AppCompatActivity {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                // Error.
-                                // ...
                                 System.out.println("Translation Failed");
                                 System.out.println(e);
                             }
                         });
-        //
     }
 
     public void translateAndAdd(final DataSnapshot dataSnapshot)
     {
         final Message message = dataSnapshot.getValue(Message.class);
-        System.out.println("My lang code "+mylangcode);
-        if(message.rec_mes==null)
-        {
             FirebaseTranslatorOptions options =
                     new FirebaseTranslatorOptions.Builder()
                             .setSourceLanguage(FirebaseTranslateLanguage.EN)
@@ -207,12 +217,12 @@ public class SingleChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(@NonNull String translatedText) {
                                     // Translation successful.
-                                    System.out.println("Translation Add Success "+translatedText);
+                                    System.out.println("Translation Add Success " + translatedText);
                                     message.rec_mes = translatedText;
-                                    rf.child("Chats").child(chatId).child(dataSnapshot.getKey()).child("res_mes").setValue(translatedText);
+                                    rf.child("Chats").child(chatId).child(dataSnapshot.getKey()).child("rec_mes").setValue(translatedText);
                                     messagesList.add(message);
                                     messageAdapter.notifyDataSetChanged();
-                                    userMessagesView.scrollToPosition(messagesList.size()-1);
+                                    userMessagesView.scrollToPosition(messagesList.size() - 1);
                                 }
                             })
                     .addOnFailureListener(
@@ -226,13 +236,6 @@ public class SingleChatActivity extends AppCompatActivity {
                                 }
                             });
         }
-        else
-        {
-            messagesList.add(message);
-            messageAdapter.notifyDataSetChanged();
-            userMessagesView.scrollToPosition(messagesList.size()-1);
-        }
-    }
 
     public void toggleLock(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -278,7 +281,6 @@ public class SingleChatActivity extends AppCompatActivity {
         }
         AlertDialog a1 = builder.create();
         a1.show();
-        a1.getWindow().setLayout(800,450);
     }
 
     @Override
