@@ -336,17 +336,17 @@ public class SingleChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         Intent in = new Intent(SingleChatActivity.this,ChatMainActivity.class);
         startActivity(in);
         finish();
-        super.onBackPressed();
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
         Date date = new Date();
         root.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
-        super.onPause();
     }
 
 }

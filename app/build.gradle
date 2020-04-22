@@ -23,6 +23,10 @@ android {
         exclude 'project.properties'
         exclude 'META-INF/INDEX.LIST'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -55,6 +59,6 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    implementation 'com.google.maps.android:android-maps-utils:0.4+'
 }
 configurations.implementation.exclude(group: 'com.google.protobuf', module: 'protobuf-lite')

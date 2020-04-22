@@ -438,16 +438,16 @@ public class ChatMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         Date date = new Date();
         rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
-        super.onBackPressed();
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
         Date date = new Date();
         rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
-        super.onPause();
     }
 
 

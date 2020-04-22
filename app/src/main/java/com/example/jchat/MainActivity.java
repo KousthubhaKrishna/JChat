@@ -41,15 +41,14 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent in = new Intent(MainActivity.this,SignupActivity.class);
         startActivity(in);
-        finish();
     }
 
     public void sendUserToChatMainActivity()
     {
         Intent in = new Intent(MainActivity.this, ChatMainActivity.class);
-        //in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        finish();
+        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(in);
+        finish();
     }
 
     public void loginCheck(View view)

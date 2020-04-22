@@ -496,14 +496,14 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onBackPressed() {
-        sendUserToChatMainActivity();
         super.onBackPressed();
+        sendUserToChatMainActivity();
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
         Date date = new Date();
         rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
-        super.onPause();
     }
 }
