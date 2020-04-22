@@ -54,7 +54,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        rootRef.child("Online").child(currentUserId).setValue("online");
 
         sdf = new SimpleDateFormat("MMM d");
         stf = new SimpleDateFormat("h:mm a");
@@ -103,10 +103,10 @@ public class FindFriendsActivity extends AppCompatActivity {
                         rootRef.child("Users").child(friendUid).child("friends").child(currentUserId).child(chatId).setValue("Personal");
                         rootRef.child("Users").child(friendUid).child("friends").child(currentUserId).child("locked").setValue("false");
                         rootRef.child("Chats").child(chatId).setValue("");
-                        Toast.makeText(FindFriendsActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FindFriendsActivity.this, "Successfully Added", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(FindFriendsActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FindFriendsActivity.this, "Already Added", Toast.LENGTH_LONG).show();
                     }
                 }
                 else

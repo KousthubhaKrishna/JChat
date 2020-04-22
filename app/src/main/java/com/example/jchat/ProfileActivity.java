@@ -72,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     CircleImageView profile;
     String profilePhoto="dp";
     String storagePath= "Users_Profile_Images/";
+    Boolean bool=false;
 
     private static final int CAMERA_REQUEST_CODE= 100;
     private static final int STORAGE_REQUEST_CODE= 200;
@@ -133,12 +134,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 showImagePicDialog();
             }
         });
-        update.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                updateProfile(v);
-            }
-        });
     }
 
     protected void initialiseFields()
@@ -150,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     protected void sendUserToChatMainActivity()
     {
         Intent in = new Intent(ProfileActivity.this,ChatMainActivity.class);
-        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(in);
         finish();
     }
@@ -177,8 +172,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             else
             {
                 Toast.makeText(ProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                sendUserToChatMainActivity();
             }
+            sendUserToChatMainActivity();
             /*try {
                 if(dp.equals("")) {
                     Picasso.get().load(R.drawable.user_icon).into(profile);
@@ -193,34 +188,28 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    private boolean checkStoragePermission()
-    {
+    private boolean checkStoragePermission() {
         boolean result= ContextCompat.checkSelfPermission( ProfileActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
     @RequiresApi(api = M)
-    private void requestStoragePermission()
-    {
+    private void requestStoragePermission() {
         requestPermissions(storagePermissions,STORAGE_REQUEST_CODE);
     }
 
-    private boolean checkCameraPermission()
-    {
+    private boolean checkCameraPermission() {
         boolean result1= ContextCompat.checkSelfPermission( ProfileActivity.this,Manifest.permission.CAMERA)==(PackageManager.PERMISSION_GRANTED);
-
         boolean result2= ContextCompat.checkSelfPermission( ProfileActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
         return result2 && result1;
     }
 
     @RequiresApi(api = M)
-    private void requestCameraPermission()
-    {
+    private void requestCameraPermission() {
         requestPermissions(cameraPermissions,CAMERA_REQUEST_CODE);
     }
 
-    private void showImagePicDialog()
-    {
+    private void showImagePicDialog() {
         String options[]={"Camera","Gallery","Remove"};
         AlertDialog.Builder builder=new AlertDialog.Builder(ProfileActivity.this);
         builder.setTitle( "Select Option..." );
@@ -275,7 +264,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             {
                 if(grantResults.length>0)
                 {
-                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if(writeStorageAccepted)
                     {
                         pickFromGallery();
@@ -289,8 +278,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             break;
 
         }
-
-
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
     }
 
@@ -302,13 +289,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             if(requestCode == IMAGE_PICK_GALLERY_CODE)
             {
                 image_uri=data.getData();
-                //uploadProfilePhoto(image_uri);
             }
 
             if(requestCode== IMAGE_PICK_CAMERA_CODE)
             {
-                //uploadProfilePhoto(image_uri);
             }
+
             Bitmap bitmap = null;
             try {
                 bitmap = Images.Media.getBitmap(getContentResolver(), image_uri);
@@ -322,9 +308,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void uploadProfilePhoto(Uri uri) {
-
-        //pd.show();
-        //String storagePath="";
         String filePathAndName = storagePath+ ""+profilePhoto+"_"+currentUserId;
         StorageReference storageReference2nd= storageReference.child(filePathAndName);
         storageReference2nd.putFile(uri)
@@ -340,28 +323,23 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                                     .addOnSuccessListener( new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            //pd.dismiss();
-                                            Toast.makeText(ProfileActivity.this,"Image Updated",Toast.LENGTH_SHORT).show();
                                         }
                                     } )
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            // pd.dismiss();
-                                            Toast.makeText(ProfileActivity.this,"Error Occured",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ProfileActivity.this,"Error Occurred",Toast.LENGTH_SHORT).show();
                                         }
                                     } );
                         }
                         else{
-                            //pd.dismiss();
-                            Toast.makeText(ProfileActivity.this,"Some error occured",Toast.LENGTH_SHORT ).show();
+                            Toast.makeText(ProfileActivity.this,"Some Error Occurred",Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } )
                 .addOnFailureListener( new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //pd.dismiss();
                         Toast.makeText(ProfileActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 } );
@@ -387,8 +365,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    public void displayData()
-    {
+    public void displayData() {
         rootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -397,6 +374,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 status = (EditText)findViewById(R.id.profile_status);
                 if(dataSnapshot.child("name").exists())
                 {
+                    if(dataSnapshot.child("name").getValue().toString().equals(""))
+                        bool=true;
                     name.setText(dataSnapshot.child("name").getValue().toString());
                     status.setText(dataSnapshot.child("status").getValue().toString());
                 }
@@ -436,8 +415,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-    public void updateLanguagePreferences()
-    {
+    public void updateLanguagePreferences() {
         loadingBar = new ProgressDialog(this);
         loadingBar.setTitle("Downloading and Updating Language Preferences .. Please Wait ..");
         loadingBar.setMessage("Please wait..");
@@ -472,7 +450,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                                                     loadingBar.dismiss();
                                                 }
                                                 Toast.makeText(ProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                                finish();
+                                                //finish();
                                             }
                                         }
                                 ).addOnFailureListener(new OnFailureListener() {
@@ -497,7 +475,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        sendUserToChatMainActivity();
+        if(bool) {}
+        else{
+            sendUserToChatMainActivity();
+        }
     }
 
     @Override

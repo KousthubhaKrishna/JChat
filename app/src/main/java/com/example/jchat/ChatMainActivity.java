@@ -234,7 +234,6 @@ public class ChatMainActivity extends AppCompatActivity {
                                         alert1.dismiss();
                                         startActivity(in);
                                         flag=false;
-                                        finish();
                                     } else {
                                         Toast.makeText(ChatMainActivity.this, "Invalid Pass Code", Toast.LENGTH_SHORT).show();
                                     }
@@ -253,7 +252,6 @@ public class ChatMainActivity extends AppCompatActivity {
                         else {
                             startActivity(in);
                             flag=false;
-                            finish();
                         }
                     }
                 });
@@ -449,7 +447,6 @@ public class ChatMainActivity extends AppCompatActivity {
         Date date = new Date();
         rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

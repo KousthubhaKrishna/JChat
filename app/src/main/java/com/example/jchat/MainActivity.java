@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent in = new Intent(MainActivity.this,SignupActivity.class);
         startActivity(in);
+        finish();
     }
 
     public void sendUserToChatMainActivity()
@@ -86,12 +87,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
-    }
-
-    protected void sendUserToMainActivity()
-    {
-        Intent in = new Intent(MainActivity.this,MainActivity.class);
-        startActivity(in);
     }
 
     protected void verifyUserExistance()

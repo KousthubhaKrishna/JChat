@@ -337,9 +337,6 @@ public class SingleChatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent in = new Intent(SingleChatActivity.this,ChatMainActivity.class);
-        startActivity(in);
-        finish();
     }
 
     @Override

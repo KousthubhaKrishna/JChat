@@ -145,4 +145,12 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         AlertDialog alert1 = builder.create();
         alert1.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent in = new Intent(ScannerActivity.this,FindFriendsActivity.class);
+        startActivity(in);
+        finish();
+    }
 }
