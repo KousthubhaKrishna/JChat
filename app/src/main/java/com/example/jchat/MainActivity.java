@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent in = new Intent(MainActivity.this,SignupActivity.class);
         startActivity(in);
+        finish();
     }
 
     public void sendUserToChatMainActivity()
@@ -124,5 +125,6 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent in = new Intent(MainActivity.this,ProfileActivity.class);
         startActivity(in);
+        finish();
     }
 }

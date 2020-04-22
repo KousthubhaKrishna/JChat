@@ -44,7 +44,6 @@ public class LogoActivity extends AppCompatActivity {
         else
         {
             sendUserToMainActivity();
-            finish();
         }
     }
 

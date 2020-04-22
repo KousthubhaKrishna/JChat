@@ -46,7 +46,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,6 +56,7 @@ import static android.os.Build.VERSION_CODES.M;
 
 public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private SimpleDateFormat sdf,stf;
     EditText name,status;
     Button update;
     String name_string,status_string,dp;
@@ -80,9 +83,26 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     Uri image_uri;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(!MyApplication.wasInBg){
+            System.out.println("Was In background");
+            Date date = new Date();
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        }
+        else {
+            System.out.println("Was In Foreground");
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        sdf = new SimpleDateFormat("MMM d");
+        stf = new SimpleDateFormat("h:mm a");
 
         update=findViewById(R.id.profile_update);
         profile=findViewById(R.id.dp);
@@ -482,5 +502,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                         });
     }
 
+    @Override
+    public void onBackPressed() {
+        sendUserToChatMainActivity();
+        super.onBackPressed();
+    }
 
+    @Override
+    protected void onPause() {
+        Date date = new Date();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        super.onPause();
+    }
 }

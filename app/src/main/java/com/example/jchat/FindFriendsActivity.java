@@ -18,6 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class FindFriendsActivity extends AppCompatActivity {
 
     String searchEmail;
@@ -26,6 +29,21 @@ public class FindFriendsActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String currentUserId;
+    private SimpleDateFormat sdf,stf;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!MyApplication.wasInBg){
+            System.out.println("Was In background");
+            Date date = new Date();
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        }
+        else {
+            System.out.println("Was In Foreground");
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +55,9 @@ public class FindFriendsActivity extends AppCompatActivity {
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
         rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+
+        sdf = new SimpleDateFormat("MMM d");
+        stf = new SimpleDateFormat("h:mm a");
 
         Intent in  = getIntent();
         String scanned_email = in.getStringExtra("scanned_email");
@@ -108,6 +129,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         finish();
     }
 
+    public void sendUserToLocationActivity(View view) {
+        Intent in = new Intent(FindFriendsActivity.this,LocationActivity.class);
+        startActivity(in);
+        finish();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -116,9 +143,10 @@ public class FindFriendsActivity extends AppCompatActivity {
         finish();
     }
 
-    public void sendUserToLocationActivity(View view) {
-        Intent in = new Intent(FindFriendsActivity.this,LocationActivity.class);
-        startActivity(in);
-        finish();
+    protected void onPause() {
+        Date date = new Date();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        super.onPause();
     }
+
 }

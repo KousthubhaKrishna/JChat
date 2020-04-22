@@ -56,11 +56,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ChatMainActivity extends AppCompatActivity {
 
+    SimpleDateFormat sdf,stf;
     FirebaseAuth mAuth;
     DatabaseReference rootRef;
     FirebaseUser currentUser;
@@ -72,19 +75,6 @@ public class ChatMainActivity extends AppCompatActivity {
     String emailqr, nameqr;
     boolean flag = true;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!MyApplication.wasInBg){
-            System.out.println("Was In background");
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");}
-        else {
-            System.out.println("Was In Foreground");
-            flag=false;
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
-        }
-    }
-
     //Location Variable
     private static final int REQUEST_CODE_LOCATION_PERMISSION=1;
     private TextView textLatLong;
@@ -94,6 +84,9 @@ public class ChatMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_main);
+
+        sdf = new SimpleDateFormat("MMM d");
+        stf = new SimpleDateFormat("h:mm a");
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -152,9 +145,20 @@ public class ChatMainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        if(!MyApplication.wasInBg){
+            System.out.println("Was In background");
+            Date date = new Date();
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        }
+        else {
+            System.out.println("Was In Foreground");
+            flag=false;
+            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        }
     }
+
 
     public void populateDetails(int index) {
         final String category = getCategory(index);
@@ -398,11 +402,13 @@ public class ChatMainActivity extends AppCompatActivity {
     public void sendUserToLoginActivity() {
         Intent in = new Intent(ChatMainActivity.this, MainActivity.class);
         startActivity(in);
+        finish();
     }
 
     protected void sendUserToProfileActivity() {
         Intent in = new Intent(ChatMainActivity.this, ProfileActivity.class);
         startActivity(in);
+        finish();
     }
 
     public void showQr(View view) {
@@ -437,7 +443,8 @@ public class ChatMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
+        Date date = new Date();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         super.onBackPressed();
     }
 
@@ -454,10 +461,8 @@ public class ChatMainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         System.out.println("Pause"+flag);
-        //if(flag) {
-            System.out.println("Pauseeeeeee");
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
-        //}
+        Date date = new Date();
+        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));;
         super.onPause();
     }
 

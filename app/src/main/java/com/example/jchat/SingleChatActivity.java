@@ -49,7 +49,7 @@ public class SingleChatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private String currentUserId;
-    private DatabaseReference rootRef,rf,ref;
+    private DatabaseReference rootRef,rf,ref,root;
     final List<Message> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     MessageAdapter messageAdapter;
@@ -58,6 +58,20 @@ public class SingleChatActivity extends AppCompatActivity {
     boolean isLocked = false;
     String onoroff;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!MyApplication.wasInBg){
+            System.out.println("Was In background");
+            Date date = new Date();
+            root.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        }
+        else {
+            System.out.println("Was In Foreground");
+            root.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -72,15 +86,16 @@ public class SingleChatActivity extends AppCompatActivity {
         chatId = in.getStringExtra("chatId");
         friendUid = in.getStringExtra("friendUId");
 
-        sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        stf = new SimpleDateFormat("HH:mm");
+        sdf = new SimpleDateFormat("MMM d");
+        stf = new SimpleDateFormat("h:mm a");
 
         //getTranslateService();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        root = FirebaseDatabase.getInstance().getReference();
+        root.child("Users").child(currentUserId).child("onOrOff").setValue("online");
         rootRef = rootRef.child("Chats").child(chatId);
 
 
@@ -334,9 +349,10 @@ public class SingleChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        //rf.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
-        super.onDestroy();
+    protected void onPause() {
+        Date date = new Date();
+        root.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        super.onPause();
     }
 
 }
