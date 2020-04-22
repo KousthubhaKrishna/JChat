@@ -347,7 +347,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void pickFromCamera() {
-
         ContentValues values= new ContentValues( );
         values.put( Images.Media.TITLE,"Temp pic");
         values.put( Images.Media.DESCRIPTION,"Temp description");
