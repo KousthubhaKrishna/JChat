@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
     public void sendUserToChatMainActivity()
     {
         Intent in = new Intent(MainActivity.this, ChatMainActivity.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(in);
+        //in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
+        startActivity(in);
     }
 
     public void loginCheck(View view)
@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         rootRef.child("Users").child(currentUserUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("Here ");
                 if(dataSnapshot.child("name").exists())
                 {
                     if(dataSnapshot.child("name").getValue().toString().isEmpty()) {

@@ -92,7 +92,7 @@ public class ChatMainActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        rootRef.child("Online").child(currentUserId).setValue("Online");
 
         lv = (ListView) findViewById(R.id.messages);
         contactNames = new ArrayList<String>();
@@ -110,7 +110,6 @@ public class ChatMainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println(tab.getPosition());
                 populateDetails(tab.getPosition());
             }
 
@@ -148,17 +147,14 @@ public class ChatMainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(!MyApplication.wasInBg){
-            System.out.println("Was In background");
             Date date = new Date();
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+            rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         }
         else {
-            System.out.println("Was In Foreground");
             flag=false;
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+            rootRef.child("Online").child(currentUserId).setValue("online");
         }
     }
-
 
     public void populateDetails(int index) {
         final String category = getCategory(index);
@@ -186,13 +182,11 @@ public class ChatMainActivity extends AppCompatActivity {
                         chatId.add(chid);
                         contactNames.add(dataSnapshot.child(ds.getKey()).child("name").getValue().toString());
                         status.add(dataSnapshot.child(ds.getKey()).child("status").getValue().toString());
-                        System.out.println(contactNames);
                     }
                 }
                 String[] contactNamesArray = contactNames.toArray(new String[contactNames.size()]);
                 final String[] statusArray = status.toArray(new String[status.size()]);
                 String[] profileArray= profile_url.toArray(new String[profile_url.size()]);
-                System.out.println("Here"+contactNamesArray.length);
                 adt = new ChatAdapter(ChatMainActivity.this, contactNamesArray, statusArray,profileArray );
                 lv.setAdapter(adt);
                 registerForContextMenu(lv);
@@ -237,6 +231,7 @@ public class ChatMainActivity extends AppCompatActivity {
                                     final String passcode = ed.getText().toString();
                                     String db_passcode = dataSnapshot.child(currentUserId).child("pass_code").getValue().toString();
                                     if (db_passcode.equals(passcode)) {
+                                        alert1.dismiss();
                                         startActivity(in);
                                         flag=false;
                                         finish();
@@ -444,25 +439,14 @@ public class ChatMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Date date = new Date();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         super.onBackPressed();
     }
 
-    /*@Override
-    protected void onDestroy() {
-        System.out.println("Destroy"+flag);
-        if(flag) {
-            System.out.println("Destroyyyyyyyyyyyyyyyy");
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("offline");
-        }
-        super.onDestroy();
-    }*/
-
     @Override
     protected void onPause() {
-        System.out.println("Pause"+flag);
         Date date = new Date();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));;
+        rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         super.onPause();
     }
 

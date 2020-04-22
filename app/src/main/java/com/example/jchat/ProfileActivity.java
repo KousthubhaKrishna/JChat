@@ -86,13 +86,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     protected void onResume() {
         super.onResume();
         if(!MyApplication.wasInBg){
-            System.out.println("Was In background");
             Date date = new Date();
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+            rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         }
         else {
-            System.out.println("Was In Foreground");
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+            rootRef.child("Online").child(currentUserId).setValue("online");
         }
     }
 
@@ -174,12 +172,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 uploadProfilePhoto(image_uri);
             if(chosenLangpos != 0)
             {
-                System.out.println("Calling update Language Preferences");
                 updateLanguagePreferences();
             }
             else
             {
-                System.out.println("Not Calling update Language Preferences");
                 Toast.makeText(ProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                 sendUserToChatMainActivity();
             }
@@ -375,7 +371,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     private void pickFromCamera() {
 
         ContentValues values= new ContentValues( );
-        System.out.println( "Camera" );
         values.put( Images.Media.TITLE,"Temp pic");
         values.put( Images.Media.DESCRIPTION,"Temp description");
         image_uri=ProfileActivity.this.getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI,values);
@@ -461,7 +456,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                         new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void v) {
-                                System.out.println("Model 1 Downloaded Success");
                                 FirebaseTranslatorOptions options =
                                         new FirebaseTranslatorOptions.Builder()
                                                 .setSourceLanguage(FirebaseTranslateLanguage.EN)
@@ -474,13 +468,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                                         new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void v) {
-                                                System.out.println("Model 2 Downloaded Success");
                                                 if (!ProfileActivity.this.isFinishing() && loadingBar != null) {
                                                     loadingBar.dismiss();
                                                 }
                                                 Toast.makeText(ProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                                                 finish();
-                                                System.out.println("Su came here");
                                             }
                                         }
                                 ).addOnFailureListener(new OnFailureListener() {
@@ -511,7 +503,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onPause() {
         Date date = new Date();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         super.onPause();
     }
 }

@@ -43,6 +43,7 @@ public class LogoActivity extends AppCompatActivity {
             verifyUserExistance();
         else
         {
+            finish();
             sendUserToMainActivity();
         }
     }
@@ -51,7 +52,6 @@ public class LogoActivity extends AppCompatActivity {
     {
         Intent in = new Intent(LogoActivity.this,MainActivity.class);
         startActivity(in);
-        finish();
     }
 
     protected void sendUserToChatMainActivity() {
@@ -59,7 +59,6 @@ public class LogoActivity extends AppCompatActivity {
         Intent in = new Intent(LogoActivity.this, ChatMainActivity.class);
         in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(in);
-        finish();
     }
 
     protected void sendUserToProfileActivity()
@@ -82,6 +81,7 @@ public class LogoActivity extends AppCompatActivity {
                     }
                     else
                     {
+                        finish();
                         sendUserToChatMainActivity();
                     }
                 }

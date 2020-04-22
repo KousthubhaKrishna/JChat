@@ -63,13 +63,11 @@ public class SingleChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(!MyApplication.wasInBg){
-            System.out.println("Was In background");
             Date date = new Date();
-            root.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+            root.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         }
         else {
-            System.out.println("Was In Foreground");
-            root.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+            root.child("Online").child(currentUserId).setValue("online");
         }
     }
 
@@ -95,7 +93,7 @@ public class SingleChatActivity extends AppCompatActivity {
         currentUserId = currentUser.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
         root = FirebaseDatabase.getInstance().getReference();
-        root.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+        root.child("Online").child(currentUserId).setValue("online");
         rootRef = rootRef.child("Chats").child(chatId);
 
 
@@ -121,10 +119,9 @@ public class SingleChatActivity extends AppCompatActivity {
                 }
         );
 
-        rf.child("Users").child(friendUid).child("onOrOff").addValueEventListener(new ValueEventListener() {
+        root.child("Online").child(friendUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("On Or Off");
                 onoroff = dataSnapshot.getValue().toString();
                 online.setText(onoroff);
             }
@@ -164,7 +161,6 @@ public class SingleChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("Here Removed");
                 Message message = dataSnapshot.getValue(Message.class);
                 int ind = 0;
                 for(Message lo : messagesList)
@@ -242,7 +238,6 @@ public class SingleChatActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(@NonNull String translatedText) {
                                 // Translation successful.
-                                System.out.println("Translation Save Success "+translatedText);
                                 String messageID = rootRef.push().getKey();
                                 final Message message = new Message(messageID,text,date,sdf.format(date),stf.format(date),currentUserId,friendUid);
                                 message.mes = translatedText;
@@ -274,7 +269,6 @@ public class SingleChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(@NonNull String translatedText) {
                                     // Translation successful.
-                                    System.out.println("Translation Add Success " + translatedText);
                                     message.rec_mes = translatedText;
                                     rf.child("Chats").child(chatId).child(dataSnapshot.getKey()).child("rec_mes").setValue(translatedText);
                                     messagesList.add(message);
@@ -351,7 +345,7 @@ public class SingleChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Date date = new Date();
-        root.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+        root.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         super.onPause();
     }
 

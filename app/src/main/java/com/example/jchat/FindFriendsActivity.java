@@ -1,8 +1,10 @@
 package com.example.jchat;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,13 +37,11 @@ public class FindFriendsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(!MyApplication.wasInBg){
-            System.out.println("Was In background");
             Date date = new Date();
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+            rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
         }
         else {
-            System.out.println("Was In Foreground");
-            rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("online");
+            rootRef.child("Online").child(currentUserId).setValue("online");
         }
     }
 
@@ -61,11 +61,28 @@ public class FindFriendsActivity extends AppCompatActivity {
 
         Intent in  = getIntent();
         String scanned_email = in.getStringExtra("scanned_email");
+        final String selected_email = in.getStringExtra("selected_email");
         if(scanned_email!=null)
         {
             Log.i("Add Friend","Via qr");
             searchEmailView.setText(scanned_email);
             searchUsers(null);
+        }
+        if(selected_email != null)
+        {
+            Log.i("Add Friend","Via Maps");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm");
+            builder.setMessage("Do you want to add "+in.getStringExtra("selected_name")+" ?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    searchEmailView.setText(selected_email);
+                    searchUsers(null);
+                }
+            });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
         }
     }
 
@@ -109,14 +126,10 @@ public class FindFriendsActivity extends AppCompatActivity {
                 {
                     friendKey = dataSnapshot.child(ds.getKey()).child("email").getValue().toString();
                     friendUid = dataSnapshot.child(ds.getKey()).child("uid").getValue().toString();
-                    System.out.println(friendKey);
-                    System.out.println("KK "+dataSnapshot.child(currentUserId).child("friends").child(friendUid).exists());
                     if(friendKey.equals(searchEmail)) {
-                        System.out.println("Returning FriendUid");
                         return friendUid;
                     }
                 }
-                System.out.println("Returning NUll");
                 return null;
             }
 
@@ -129,12 +142,6 @@ public class FindFriendsActivity extends AppCompatActivity {
         finish();
     }
 
-    public void sendUserToLocationActivity(View view) {
-        Intent in = new Intent(FindFriendsActivity.this,LocationActivity.class);
-        startActivity(in);
-        finish();
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -143,10 +150,16 @@ public class FindFriendsActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void onPause() {
-        Date date = new Date();
-        rootRef.child("Users").child(currentUserId).child("onOrOff").setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
-        super.onPause();
+    public void sendUserToLocationActivity(View view) {
+        Intent in = new Intent(FindFriendsActivity.this, MapsActivity.class);
+        startActivity(in);
+        finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Date date = new Date();
+        rootRef.child("Online").child(currentUserId).setValue("last seen at " +stf.format(date)+" on "+sdf.format(date));
+    }
 }
